@@ -1260,3 +1260,18 @@ Use the appropriate level:
 - Security tests
 
 Perform
+
+The HTML prototype is a visual and interaction reference.
+
+It MUST NOT be treated as production architecture.
+
+The AI MUST NOT:
+- port DOM structure to Flutter
+- reproduce prototype state hacks
+- reproduce CSS architecture
+- reproduce static mock behavior
+- preserve prototype implementation mistakes
+
+The AI MUST reproduce the intended product behavior
+according to the Master Specification using the defined
+Flutter/backend architecture.
