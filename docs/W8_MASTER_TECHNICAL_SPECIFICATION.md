@@ -33,7 +33,7 @@ They MUST NOT override the technical specification or implementation rules.
 
 ### Approved UI/UX Prototype
 
-[Prototype — index.html](design/index.html)
+[Prototype — index.html](design/Index.html)
 
 ### Prototype Audit Report
 
