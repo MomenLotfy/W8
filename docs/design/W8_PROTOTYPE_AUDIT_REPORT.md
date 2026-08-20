@@ -1,5 +1,5 @@
 
-# NUR — Prototype Audit Report & Recommended Flutter Design System Specification
+# W8 — Prototype Audit Report & Recommended Flutter Design System Specification
 
 **Subject of audit:** `nur-app-1-2.html` (approved UI/UX prototype, including the Notification Preferences and Admin Dashboard additions)
 **Scope:** Visual/interaction reference only. This is an audit — no prototype code was changed to produce it.
