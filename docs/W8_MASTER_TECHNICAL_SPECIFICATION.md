@@ -127,3 +127,62 @@ Acceptance Criteria
 Commit / Pull Request
       ↓
 Next Task
+
+
+---
+
+## 6. Specification Integrity
+
+The specification documents collectively define the W8 system.
+
+Before implementation of any milestone, the AI agent MUST:
+
+1. Identify the relevant specification documents.
+2. Verify terminology and domain consistency.
+3. Check dependencies against previously implemented milestones.
+4. Detect conflicting requirements.
+5. Report unresolved conflicts before implementation.
+
+The AI agent MUST NOT silently redefine:
+
+- domain entities
+- API contracts
+- authentication behavior
+- authorization rules
+- subscription entitlements
+- content states
+- security controls
+- data ownership
+- system boundaries
+
+Any required deviation MUST be explicitly documented and approved before implementation.
+
+---
+
+## 7. Implementation Boundary
+
+A milestone MUST implement only the capabilities assigned to that milestone.
+
+Future capabilities may be represented through interfaces, abstractions, contracts, or extension points when required by the architecture, but MUST NOT be implemented prematurely.
+
+The prototype MUST NOT be used as a source of production logic.
+
+---
+
+## 8. Specification Status
+
+This specification is considered:
+
+**AUTHORITATIVE — IMPLEMENTATION READY**
+
+Changes to the specification after implementation begins MUST be versioned and reviewed.
+
+Breaking changes MUST identify:
+
+- affected milestones
+- affected modules
+- affected APIs
+- affected database structures
+- migration requirements
+- testing impact
+- security impact
