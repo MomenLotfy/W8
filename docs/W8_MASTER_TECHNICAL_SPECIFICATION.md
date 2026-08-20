@@ -37,8 +37,7 @@ They MUST NOT override the technical specification or implementation rules.
 
 ### Prototype Audit Report
 
-[Prototype Audit Report](design/PROTOTYPE_AUDIT_REPORT.md)
-
+[Prototype Audit Report](design/W8_PROTOTYPE_AUDIT_REPORT.md)
 The prototype is a visual and interaction reference.
 
 It MUST NOT be treated as production architecture or copied directly into the Flutter application.
