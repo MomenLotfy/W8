@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NUR — Design System & Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   NUR — Design Tokens
+   ============================================================ */
+:root{
+  --bg:#0B0B0B;
+  --surface:#141414;
+  --surface-2:#1A1A1A;
+  --surface-3:#212121;
+  --border:#292929;
+  --border-strong:#383838;
+  --text-primary:#F2F2F0;
+  --text-secondary:#A6A6A3;
+  --text-tertiary:#6E6E6B;
+  /* --accent = literal brand color, used for solid fills (buttons, brand mark, dots).
+     --accent-strong = foreground-safe tone for text/icons/strokes/borders on top of
+     dark surfaces (contrast-checked ~5.5:1); on light theme it runs darker instead. */
+  --accent:#FF5C00;
+  --accent-strong:#FF8A47;
+  --accent-dim:#E65200;
+  --accent-tint:rgba(255,92,0,0.18);
+  --accent-tint-strong:rgba(255,92,0,0.30);
+  --on-accent:#1B1006;
+  --success:#7FA06E;
+  --success-tint:rgba(127,160,110,0.16);
+  --warning:#C98A3D;
+  --warning-tint:rgba(201,138,61,0.16);
+  --danger:#C5645A;
+  --danger-tint:rgba(197,100,90,0.16);
+  --info:#7C93AE;
+
+  --font-display:'Somar Sans','Inter',sans-serif;
+  --font-body:'Somar Sans','Inter',sans-serif;
+  --font-arabic:'Somar Sans','IBM Plex Sans Arabic','Inter',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-7:32px; --sp-8:40px; --sp-9:48px; --sp-10:64px;
+
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  --shadow-1:0 1px 2px rgba(0,0,0,.45);
+  --shadow-2:0 8px 24px rgba(0,0,0,.5);
+  --shadow-glow:0 0 0 1px rgba(255,138,71,.3), 0 0 24px rgba(255,138,71,.18);
+
+  --dur-1:120ms; --dur-2:220ms;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+html[data-theme="light"]{
+  --bg:#F7F7F5;
+  --surface:#FFFFFF;
+  --surface-2:#F0F0EE;
+  --surface-3:#E6E6E2;
+  --border:#DEDEDA;
+  --border-strong:#CCCCC6;
+  --text-primary:#141414;
+  --text-secondary:#54544F;
+  --text-tertiary:#8B8B85;
+  --accent:#FF5C00;
+  --accent-strong:#B33F00;
+  --accent-dim:#E65200;
+  --accent-tint:rgba(255,92,0,0.10);
+  --on-accent:#1B1006;
+  --success:#4F7345;
+  --success-tint:rgba(79,115,69,0.10);
+  --warning:#9C6B27;
+  --warning-tint:rgba(156,107,39,0.10);
+  --danger:#A84B41;
+  --danger-tint:rgba(168,75,65,0.10);
+  --info:#4C6C8C;
+  --shadow-1:0 1px 2px rgba(20,14,8,.08);
+  --shadow-2:0 8px 24px rgba(20,14,8,.12);
+  --shadow-glow:0 0 0 1px rgba(255,92,0,.22), 0 0 18px rgba(255,92,0,.12);
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  min-height:100vh;
+}
+html[dir="rtl"] body{font-family:var(--font-arabic);}
+img,svg{display:block;}
+button{font-family:inherit;}
+::selection{background:var(--accent-tint-strong);}
+
+/* focus-visible accessibility ring — consistent across all interactive elements */
+:focus-visible{
+  outline:2px solid var(--accent-strong);
+  outline-offset:2px;
+  border-radius:var(--r-sm);
+}
+
+/* ============================================================
+   Utility classes
+   ============================================================ */
+.flex{display:flex;}
+.flex-col{display:flex;flex-direction:column;}
+.items-center{align-items:center;}
+.items-start{align-items:flex-start;}
+.items-end{align-items:flex-end;}
+.justify-between{justify-content:space-between;}
+.justify-center{justify-content:center;}
+.wrap{flex-wrap:wrap;}
+.w-full{width:100%;}
+.grow{flex:1 1 auto;}
+.rel{position:relative;}
+.text-start{text-align:start;}
+.text-center{text-align:center;}
+.gap-1{gap:var(--sp-1);} .gap-2{gap:var(--sp-2);} .gap-3{gap:var(--sp-3);}
+.gap-4{gap:var(--sp-4);} .gap-5{gap:var(--sp-5);} .gap-6{gap:var(--sp-6);}
+.p-0{padding:0;}
+.p-3{padding:var(--sp-3);} .p-4{padding:var(--sp-4);} .p-5{padding:var(--sp-5);} .p-6{padding:var(--sp-6);}
+.px-4{padding-inline:var(--sp-4);} .px-5{padding-inline:var(--sp-5);} .px-6{padding-inline:var(--sp-6);}
+.py-2{padding-block:var(--sp-2);} .py-3{padding-block:var(--sp-3);} .py-4{padding-block:var(--sp-4);}
+.mt-1{margin-top:var(--sp-1);} .mt-2{margin-top:var(--sp-2);} .mt-3{margin-top:var(--sp-3);}
+.mt-4{margin-top:var(--sp-4);} .mt-5{margin-top:var(--sp-5);} .mt-6{margin-top:var(--sp-6);}
+.mb-1{margin-bottom:var(--sp-1);} .mb-2{margin-bottom:var(--sp-2);} .mb-3{margin-bottom:var(--sp-3);}
+.mb-4{margin-bottom:var(--sp-4);} .mb-5{margin-bottom:var(--sp-5);} .mb-6{margin-bottom:var(--sp-6);}
+
+/* Type scale */
+.t-display-xl{font-family:var(--font-display);font-weight:800;font-size:32px;line-height:40px;letter-spacing:-0.02em;color:var(--text-primary);}
+html[dir=rtl] .t-display-xl{font-family:var(--font-arabic);font-weight:700;letter-spacing:0;}
+.t-display-lg{font-family:var(--font-display);font-weight:700;font-size:24px;line-height:30px;letter-spacing:-0.01em;color:var(--text-primary);}
+html[dir=rtl] .t-display-lg{font-family:var(--font-arabic);letter-spacing:0;}
+.t-title{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:24px;color:var(--text-primary);}
+html[dir=rtl] .t-title{font-family:var(--font-arabic);}
+.t-body-lg{font-weight:500;font-size:15px;line-height:22px;color:var(--text-primary);}
+html[dir=rtl] .t-body-lg{font-family:var(--font-arabic);}
+.t-body{font-weight:400;font-size:14px;line-height:20px;color:var(--text-secondary);}
+html[dir=rtl] .t-body{font-family:var(--font-arabic);}
+.t-caption{font-weight:500;font-size:12px;line-height:16px;color:var(--text-tertiary);letter-spacing:0.01em;}
+html[dir=rtl] .t-caption{font-family:var(--font-arabic);}
+.t-eyebrow{font-weight:600;font-size:11px;line-height:14px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);}
+html[dir=rtl] .t-eyebrow{font-family:var(--font-arabic);letter-spacing:0;text-transform:none;}
+.t-mono-xl{font-family:var(--font-mono);font-weight:600;font-size:30px;line-height:34px;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.t-mono-lg{font-family:var(--font-mono);font-weight:600;font-size:20px;line-height:24px;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.t-mono-md{font-family:var(--font-mono);font-weight:600;font-size:15px;line-height:20px;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.t-mono-sm{font-family:var(--font-mono);font-weight:500;font-size:12px;line-height:16px;color:var(--text-secondary);font-variant-numeric:tabular-nums;}
+.text-secondary{color:var(--text-secondary);}
+.text-tertiary{color:var(--text-tertiary);}
+.text-accent{color:var(--accent-strong);}
+.text-success{color:var(--success);}
+.text-warning{color:var(--warning);}
+.text-danger{color:var(--danger);}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  font-family:var(--font-display);font-weight:600;font-size:14px;line-height:1;
+  border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;
+  padding:0 var(--sp-5);height:48px;
+  transition:transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+  white-space:nowrap; -webkit-user-select:none; user-select:none;
+}
+html[dir=rtl] .btn{font-family:var(--font-arabic);font-weight:600;}
+.btn:active{transform:scale(0.97);}
+.btn-sm{height:38px;padding:0 var(--sp-4);font-size:13px;border-radius:var(--r-sm);}
+.btn-full{width:100%;}
+.btn-primary{background:var(--accent);color:var(--on-accent);}
+.btn-primary:hover{background:var(--accent-strong);}
+.btn-secondary{background:var(--surface-3);color:var(--text-primary);border-color:var(--border-strong);}
+.btn-secondary:hover{border-color:var(--accent-strong);}
+.btn-ghost{background:transparent;color:var(--text-primary);}
+.btn-ghost:hover{background:var(--surface-2);}
+.btn-danger{background:transparent;color:var(--danger);border-color:var(--danger-tint);}
+.btn-icon{width:44px;height:44px;padding:0;border-radius:var(--r-md);background:var(--surface-2);color:var(--text-primary);}
+.btn:disabled{opacity:0.38;cursor:not-allowed;transform:none;}
+.btn-loading{color:transparent!important;position:relative;}
+.btn-loading::after{
+  content:"";position:absolute;width:18px;height:18px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;
+  animation:spin .7s linear infinite;
+}
+.btn-secondary.btn-loading::after,.btn-ghost.btn-loading::after{border-color:var(--border-strong);border-top-color:var(--text-primary);}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ============================================================
+   Inputs
+   ============================================================ */
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:13px;font-weight:600;color:var(--text-secondary);}
+html[dir=rtl] .field label{font-family:var(--font-arabic);}
+.input, .select{
+  height:50px;border-radius:var(--r-md);border:1.5px solid var(--border);
+  background:var(--surface-2);color:var(--text-primary);
+  padding:0 var(--sp-4);font-size:15px;font-family:inherit;width:100%;
+  transition:border-color var(--dur-1) var(--ease);
+}
+.input::placeholder{color:var(--text-tertiary);}
+.input:focus, .select:focus{border-color:var(--accent-strong);outline:none;}
+.input-error{border-color:var(--danger);}
+.error-text{font-size:12px;color:var(--danger);font-weight:500;}
+.helper-text{font-size:12px;color:var(--text-tertiary);}
+
+.stepper{display:flex;align-items:center;gap:var(--sp-3);}
+.stepper button{
+  width:40px;height:40px;border-radius:var(--r-md);border:1.5px solid var(--border);
+  background:var(--surface-2);color:var(--text-primary);font-size:18px;cursor:pointer;
+}
+.stepper button:active{background:var(--accent-tint);border-color:var(--accent-strong);}
+.stepper .val{min-width:64px;text-align:center;font-family:var(--font-mono);font-weight:600;font-size:18px;}
+
+.toggle{width:46px;height:28px;border-radius:var(--r-pill);background:var(--surface-3);border:1.5px solid var(--border);position:relative;cursor:pointer;flex-shrink:0;transition:background var(--dur-2)}
+.toggle .knob{position:absolute;top:2px;inset-inline-start:2px;width:20px;height:20px;border-radius:50%;background:var(--text-tertiary);transition:inset-inline-start var(--dur-2) var(--ease), background var(--dur-2);}
+.toggle.on{background:var(--accent-tint-strong);border-color:var(--accent-strong);}
+.toggle.on .knob{inset-inline-start:20px;background:var(--accent-strong);}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 var(--sp-4);
+  border-radius:var(--r-pill);border:1.5px solid var(--border);background:var(--surface-2);
+  font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;
+  transition:all var(--dur-1) var(--ease);
+}
+html[dir=rtl] .chip{font-family:var(--font-arabic);}
+.chip.selected{background:var(--accent-tint);border-color:var(--accent-strong);color:var(--accent-strong);}
+.chip.selected::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-strong);}
+
+.segmented{display:flex;background:var(--surface-2);border-radius:var(--r-md);padding:3px;border:1px solid var(--border);}
+.segmented button{
+  flex:1;border:none;background:transparent;padding:9px var(--sp-3);border-radius:9px;
+  font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;
+}
+.segmented button.active{background:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-1);}
+
+/* ============================================================
+   Cards & surfaces
+   ============================================================ */
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:var(--sp-5);
+}
+.card-flat{background:var(--surface-2);border-radius:var(--r-lg);padding:var(--sp-4);}
+.list-item{
+  display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) 0;border-bottom:1px solid var(--border);
+}
+.list-item:last-child{border-bottom:none;}
+.icon-badge{
+  width:40px;height:40px;border-radius:var(--r-md);background:var(--surface-3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary);
+}
+.icon-badge.accent{background:var(--accent-tint);color:var(--accent-strong);}
+.icon-badge.success{background:var(--success-tint);color:var(--success);}
+.icon-badge.warning{background:var(--warning-tint);color:var(--warning);}
+.icon-badge.danger{background:var(--danger-tint);color:var(--danger);}
+
+.divider{height:1px;background:var(--border);border:none;margin:var(--sp-4) 0;}
+
+/* premium lock badge */
+.pro-badge{
+  display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:var(--r-pill);
+  background:linear-gradient(135deg,var(--accent-tint-strong),var(--accent-tint));
+  border:1px solid var(--accent-strong);color:var(--accent-strong);font-size:10px;font-weight:700;letter-spacing:0.04em;
+}
+html[dir=rtl] .pro-badge{font-family:var(--font-arabic);letter-spacing:0;}
+
+.locked{position:relative;overflow:hidden;}
+.locked .locked-content{filter:blur(5px);opacity:.5;pointer-events:none;user-select:none;}
+.locked-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(180deg, transparent, var(--surface) 65%);
+  text-align:center;padding:var(--sp-4);
+}
+.locked-overlay .lock-circle{
+  width:40px;height:40px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent-strong);
+  display:flex;align-items:center;justify-content:center;color:var(--accent-strong);box-shadow:var(--shadow-glow);
+}
+
+/* avatar / centered confirm modal */
+.avatar-btn{
+  width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--on-accent);
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:14px;
+  border:none;cursor:pointer;flex-shrink:0;
+}
+.modal-center{
+  position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:250;display:flex;align-items:center;justify-content:center;padding:var(--sp-6);
+}
+.modal-card{
+  background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--r-lg);
+  padding:var(--sp-5);width:100%;box-shadow:var(--shadow-2);
+}
+
+/* ============================================================
+   Progress components — signature: the Ring
+   ============================================================ */
+.ring-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.ring-wrap svg{transform:rotate(-90deg);filter:drop-shadow(0 0 8px rgba(255,138,71,.25));}
+html[data-theme=light] .ring-wrap svg{filter:none;}
+.ring-center{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+
+.bar-track{height:8px;border-radius:var(--r-pill);background:var(--surface-3);overflow:hidden;}
+.bar-fill{height:100%;border-radius:var(--r-pill);background:var(--accent-strong);transition:width var(--dur-2) var(--ease);}
+.bar-track.thin{height:6px;}
+
+.steps-progress{display:flex;gap:6px;}
+.steps-progress .seg{flex:1;height:4px;border-radius:var(--r-pill);background:var(--surface-3);}
+.steps-progress .seg.done{background:var(--accent-strong);}
+.steps-progress .seg.active{background:var(--border-strong);position:relative;overflow:hidden;}
+
+/* ============================================================
+   Charts (lightweight SVG)
+   ============================================================ */
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;}
+.chart-bars .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;}
+.chart-bars .bar{width:100%;border-radius:6px 6px 3px 3px;background:var(--surface-3);transition:height var(--dur-2) var(--ease);}
+.chart-bars .bar.hi{background:var(--accent-strong);}
+.chart-bars .lbl{font-size:10px;color:var(--text-tertiary);font-weight:600;}
+
+/* ============================================================
+   Dashboard — modular bento grid
+   ============================================================ */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);}
+.dash-tile{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:var(--sp-4);display:flex;flex-direction:column;justify-content:space-between;
+  gap:var(--sp-3);min-height:112px;
+}
+.dash-tile.tall{min-height:136px;}
+.dash-tile.clickable{cursor:pointer;transition:border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);}
+.dash-tile.clickable:active{transform:scale(0.97);}
+.dash-tile.clickable:hover{border-color:var(--border-strong);}
+
+/* ============================================================
+   Skeleton / loading
+   ============================================================ */
+.skeleton{background:linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 37%, var(--surface-2) 63%);
+  background-size:400% 100%; animation:shimmer 1.6s ease-in-out infinite; border-radius:var(--r-sm);}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+
+/* empty / error state */
+.state-block{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--sp-8) var(--sp-5);gap:var(--sp-3);}
+.state-block .state-icon{width:56px;height:56px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);}
+.state-block.error .state-icon{background:var(--danger-tint);color:var(--danger);}
+
+/* ============================================================
+   Phone frame
+   ============================================================ */
+.phone{
+  width:375px;height:812px;background:var(--bg);border-radius:44px;
+  border:10px solid #000; box-shadow:0 30px 60px rgba(0,0,0,.5), 0 0 0 2px #000;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+html[data-theme=light] .phone{border-color:#111;}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#000;border-radius:0 0 16px 16px;z-index:50;}
+.status-bar{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600;color:var(--text-primary);}
+.home-indicator{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:var(--text-primary);opacity:.35;}
+.phone-screen{height:calc(100% - 46px - 78px);overflow-y:auto;padding:0 var(--sp-5);}
+.phone-screen::-webkit-scrollbar{width:0;}
+.phone-topbar{padding:var(--sp-2) 0 var(--sp-4);}
+
+.bottom-nav{
+  position:absolute;left:14px;right:14px;bottom:14px;height:64px;
+  background:rgba(18,18,18,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.08);border-radius:999px;
+  display:flex;align-items:center;justify-content:space-around;padding:0 6px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.bottom-nav .nav-item{
+  position:relative;flex:1;max-width:52px;height:48px;display:flex;align-items:center;justify-content:center;
+  border-radius:999px;color:rgba(255,255,255,.5);
+  background:none;border:none;cursor:pointer;font-family:inherit;
+  transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease);
+}
+.bottom-nav .nav-item.active{background:rgba(255,255,255,.14);color:#fff;}
+.bottom-nav .nav-item .nav-dot{
+  position:absolute;top:6px;inset-inline-end:11px;width:7px;height:7px;border-radius:50%;
+  background:var(--danger);border:1.5px solid rgba(18,18,18,.9);
+}
+
+/* ============================================================
+   Shell / layout for this document
+   ============================================================ */
+.shell{max-width:1400px;margin:0 auto;padding:var(--sp-6) var(--sp-6) 100px;}
+.top-shell{
+  position:sticky;top:0;z-index:100;background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+}
+.top-shell-inner{max-width:1400px;margin:0 auto;padding:var(--sp-4) var(--sp-6);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--on-accent);font-weight:800;font-family:var(--font-mono);font-size:15px;box-shadow:var(--shadow-glow);}
+.brand .name{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.01em;}
+.brand .tagline{font-size:11px;color:var(--text-tertiary);}
+
+.main-tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:var(--r-md);border:1px solid var(--border);}
+.main-tabs button{border:none;background:transparent;padding:9px 16px;border-radius:8px;font-weight:600;font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.main-tabs button.active{background:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-1);}
+
+.icon-toggle{width:38px;height:38px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary);}
+
+.section-h{display:flex;align-items:baseline;justify-content:space-between;margin:var(--sp-9) 0 var(--sp-4);}
+.section-h .num{font-family:var(--font-mono);color:var(--accent-strong);font-size:13px;margin-inline-end:8px;}
+.grid{display:grid;gap:var(--sp-4);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+
+/* ============================================================
+   Admin Dashboard (web/desktop)
+   ============================================================ */
+.admin-shell{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;min-height:760px;box-shadow:var(--shadow-2);}
+.admin-sidebar{width:224px;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);padding:var(--sp-5) var(--sp-3);display:flex;flex-direction:column;gap:2px;}
+.admin-brand{display:flex;align-items:center;gap:9px;padding:var(--sp-2) var(--sp-3);margin-bottom:var(--sp-5);}
+.admin-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-md);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;text-align:start;width:100%;font-family:inherit;transition:background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);}
+.admin-nav-item:hover{background:var(--surface-2);color:var(--text-primary);}
+.admin-nav-item.active{background:var(--accent-tint);color:var(--accent-strong);}
+.admin-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.admin-topbar{height:64px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 var(--sp-6);gap:var(--sp-4);}
+.admin-content{padding:var(--sp-6);overflow-y:auto;}
+.admin-search{display:flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:0 12px;height:38px;color:var(--text-tertiary);font-size:13px;}
+.stat-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--sp-4);}
+.stat-card .stat-value{font-family:var(--font-mono);font-weight:700;font-size:26px;color:var(--text-primary);}
+.stat-delta{font-size:12px;font-weight:700;}
+.stat-delta.up{color:var(--success);}
+.stat-delta.down{color:var(--danger);}
+.a-table{width:100%;border-collapse:collapse;}
+.a-table th{text-align:start;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;padding:12px var(--sp-4);border-bottom:1px solid var(--border);background:var(--surface-2);}
+.a-table td{padding:11px var(--sp-4);border-bottom:1px solid var(--border);font-size:13px;color:var(--text-primary);vertical-align:middle;}
+.a-table tr:last-child td{border-bottom:none;}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:var(--r-pill);font-size:11px;font-weight:700;white-space:nowrap;}
+.status-pill.on{background:var(--success-tint);color:var(--success);}
+.status-pill.off{background:var(--surface-3);color:var(--text-tertiary);}
+.status-pill.warn{background:var(--warning-tint);color:var(--warning);}
+.status-pill.bad{background:var(--danger-tint);color:var(--danger);}
+@media (max-width:960px){
+  .admin-shell{flex-direction:column;min-height:0;}
+  .admin-sidebar{width:100%;flex-direction:row;overflow-x:auto;border-inline-end:none;border-bottom:1px solid var(--border);}
+  .admin-brand{display:none;}
+  .grid-4{grid-template-columns:repeat(2,1fr);}
+}
+.swatch{border-radius:var(--r-md);height:64px;display:flex;align-items:flex-end;padding:8px;border:1px solid var(--border);}
+.swatch span{font-family:var(--font-mono);font-size:10px;background:rgba(0,0,0,.35);color:#fff;padding:2px 6px;border-radius:4px;}
+
+.phones-row{display:flex;gap:var(--sp-7);flex-wrap:wrap;align-items:flex-start;}
+.phone-caption{text-align:center;margin-top:var(--sp-3);font-size:13px;font-weight:600;color:var(--text-secondary);}
+
+@media (max-width:900px){
+  .phones-row{justify-content:center;}
+  .grid-4{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   NUR — i18n
+   ============================================================ */
+const STR = {
+  en: {
+    appName:"NUR", tagline:"Clarity in every rep.",
+    tabSystem:"Design System", tabProduct:"App Screens",
+    // nav
+    navDashboard:"Dashboard", navWorkout:"Workout", navCoach:"AI Coach", navNutrition:"Nutrition", navHistory:"History",
+    // onboarding
+    ob1Title:"What's your main goal?", ob1Sub:"This shapes your plan, your targets, and your daily focus.",
+    goalLose:"Lose fat", goalBuild:"Build muscle", goalMaintain:"Maintain & recomp", goalPerform:"Improve performance",
+    ob2Title:"Tell us about your body", ob2Sub:"Used to calculate your calorie and macro targets.",
+    weight:"Weight", height:"Height", targetWeight:"Target weight",
+    ob3Title:"Experience & activity", ob3Sub:"So your plan matches how your body actually adapts.",
+    expBeginner:"Beginner", expIntermediate:"Intermediate", expAdvanced:"Advanced",
+    activityLevel:"Daily activity level", actSedentary:"Sedentary", actLight:"Lightly active", actModerate:"Moderately active", actVeryActive:"Very active",
+    ob4Title:"Build your training week", ob4Sub:"Pick your days and preferred workout time.",
+    trainingDays:"Training days per week", workoutTime:"Preferred workout time", timeMorning:"Morning", timeAfternoon:"Afternoon", timeEvening:"Evening", timeLate:"Late night",
+    ob5Title:"Nutrition preferences", ob5Sub:"NUR will tailor meals and substitutions to fit this.",
+    nutOmnivore:"Omnivore", nutVegetarian:"Vegetarian", nutVegan:"Vegan", nutPescatarian:"Pescatarian", nutHalal:"Halal", nutKeto:"Low-carb / Keto",
+    continue:"Continue", back:"Back", finish:"Set up my plan", step:"Step",
+    // dashboard
+    goodMorning:"Good morning, Sara", todayIs:"Tuesday, August 18",
+    dayScore:"Your Day Score", dayScoreSub:"3 of 5 targets on track",
+    workoutStatus:"Workout", proteinStatus:"Protein", waterStatus:"Water", sleepStatus:"Sleep", stepsStatus:"Steps",
+    done:"Done", pending:"Pending", onTrack:"On track", low:"Behind",
+    goalJourney:"Goal Journey", current:"Current", target:"Target", dayInto:"Day", ofJourney:"of your journey",
+    todaysFocus:"Today's Focus", quickActions:"Quick Actions",
+    logWorkout:"Log Workout", logMeal:"Log Meal", logWater:"Add Water", logWeight:"Log Weight",
+    dailyInsight:"Daily AI Insight", insightBody:"Your protein has averaged 18% below target on your last 3 training days — this tends to line up with the slower strength progress you logged on bench press. Try adding a 30g shake after tonight's session.",
+    askCoach:"Ask coach about this",
+    focusItem1:"Push Day — Chest, Shoulders, Triceps", focusItem1Sub:"6 exercises · ~52 min",
+    focusItem2:"142g protein remaining", focusItem2Sub:"3 meals left to log",
+    // workout
+    workoutPlanTitle:"Push Day A", workoutPlanSub:"Week 6 · Hypertrophy block", exercises:"exercises", minutes:"min",
+    startWorkout:"Start Workout", exerciseLibrary:"Exercise Library", muscleGroups:"Muscle groups",
+    chest:"Chest", back:"Back", legs:"Legs", shoulders:"Shoulders", arms:"Arms", core:"Core",
+    searchExercises:"Search exercises", set:"Set", reps:"Reps", weight:"Weight", logSet:"Log set",
+    personalBest:"Personal best", previous:"Previous", current2:"Current",
+    workoutHistory:"Recent Sessions", exerciseDetail:"Exercise", howTo:"How to perform", targetMuscles:"Target muscles",
+    benchPress:"Barbell Bench Press", squat:"Back Squat", deadlift:"Deadlift", ohp:"Overhead Press", row:"Barbell Row", pulldown:"Lat Pulldown",
+    // nutrition
+    todaysNutrition:"Today's Nutrition", calories:"Calories", protein:"Protein", carbs:"Carbs", fats:"Fats",
+    remaining:"remaining", meals:"Meals", breakfast:"Breakfast", lunch:"Lunch", dinner:"Dinner", snack:"Snack",
+    logged:"Logged", notLogged:"Not logged", addMeal:"Add meal", swapMeal:"Swap with AI",
+    mealReplaceTitle:"AI Substitution", mealReplaceSub:"Similar macros, better fit for what's left in your day",
+    // coach
+    coachGreeting:"Hi Sara — I looked at your last 7 days. Want the quick version or the full breakdown?",
+    coachQuick:"Quick version", coachFull:"Full breakdown",
+    coachInputPh:"Ask NUR Coach anything…",
+    insightsDaily:"Daily", insightsWeekly:"Weekly", insightsMonthly:"Monthly",
+    weeklyInsightTitle:"This week", weeklyInsightBody:"Volume on push exercises is up 8% vs last week while your average sleep dropped from 7h 20m to 6h 40m. Recovery, not effort, is likely your next limiter.",
+    monthlyInsightTitle:"This month", monthlyInsightBody:"Bodyweight down 1.4 kg while estimated 1RM on squat rose 6%— a strong recomposition trend. Protein consistency (5 of 7 days on target) is the main lever left.",
+    // history
+    weightProgress:"Weight Progress", strengthProgress:"Strength Progress", nutritionHistory:"Nutrition History", goalProgress:"Goal Progress",
+    last30:"Last 30 days", last90:"Last 90 days", last12w:"Last 12 weeks",
+    // settings
+    settings:"Settings", language:"Language", appearance:"Appearance", light:"Light", dark:"Dark", system:"System",
+    notifications:"Notifications", units:"Units", metric:"Metric (kg / cm)", imperial:"Imperial (lb / ft)",
+    workoutReminders:"Workout reminders", mealReminders:"Meal reminders", weeklySummary:"Weekly summary",
+    account:"Account", subscription:"Subscription", helpSupport:"Help & Support", signOut:"Sign out",
+    // premium
+    unlockPremium:"Unlock NUR Premium", premiumSub:"Everything you need to actually reach your goal.",
+    proAiCoach:"AI Coach, unlimited", proInsights:"Daily, weekly & monthly AI insights", proPlans:"Personalized workout plans",
+    proNutrition:"Personalized nutrition targets", proMeal:"AI meal substitutions", proStats:"Advanced statistics",
+    proReminders:"Smart meal reminders", proAds:"Zero ads, ever",
+    monthly:"Monthly", yearly:"Yearly", saveBadge:"Save 33%", startTrial:"Start 7-day free trial", proLocked:"Premium feature",
+    unlock:"Unlock with Premium",
+    // states
+    loadingState:"Loading your data…", emptyWorkoutTitle:"No sessions yet", emptyWorkoutBody:"Log your first workout to start tracking progress.",
+    errorTitle:"Couldn't load this", errorBody:"Check your connection and try again.", retry:"Retry",
+    startFirst:"Start first workout",
+    // welcome / plan ready
+    welcomeTitle:"Your fitness journey, made personal.", welcomeSub:"Track your workouts, nutrition, progress and daily habits — all in one place.",
+    getStarted:"Get Started", haveAccount:"Already have an account? Log in",
+    planReadyTitle:"Your plan is ready", planReadyGoal:"Goal", planReadyTarget:"Target", planReadyTraining:"Training", startJourney:"Start Your Journey",
+    // day score breakdown
+    dayScoreBreakdown:"Day Score Breakdown", dayScoreFormula:"Calculated from today's workout, nutrition, hydration, sleep and steps. The weighting adapts to your goal.",
+    // workout additions
+    viewFullHistory:"View full history", equipment:"Equipment",
+    eqBodyweight:"Bodyweight", eqDumbbell:"Dumbbells", eqBarbell:"Barbell", eqMachine:"Machine",
+    recentPerformance:"Recent Performance",
+    leaveWorkoutTitle:"Leave workout?", leaveWorkoutBody:"Your progress on this session isn't finished yet.",
+    continueWorkoutCta:"Continue Workout", saveExit:"Save & Exit", discardWorkout:"Discard",
+    autosaveNote:"Every set is saved automatically as you log it.", finishWorkout:"Finish Workout",
+    workoutCompleteTitle:"Workout Complete", totalVolume:"Total Volume", prHighlights:"Progress Highlights", doneCta:"Done",
+    // nutrition additions
+    nutTabToday:"Today", nutTabPlan:"Meal Plan", plannedFor:"Planned for",
+    // coach additions
+    contextIndicator:"Context: Workout · Nutrition · Goals",
+    basedOnWeek:"Based on the last 7 days", basedOnMonth:"Based on the last 30 days",
+    // history restructure
+    histOverview:"Overview", histWorkouts:"Workouts", histProgress:"Progress",
+    thisWeekTitle:"This Week", avgProtein:"Avg protein", avgSteps:"Avg steps", avgSleep:"Avg sleep", weeklyGoalCompletion:"Weekly goal",
+    aiSummary:"AI Summary", weeklyAiSummary:"Consistency improved this week — 3 of 3 planned workouts completed and protein landed on target 5 of 7 days. Sleep is the one metric trending the wrong way.",
+    strengthLocked:"Long-term strength trends and volume-load analysis.",
+    // profile
+    profileTitle:"Profile", personalInfo:"Personal Information", goalsSection:"Goals", trainingSection:"Training", nutritionPrefsSection:"Nutrition",
+    // settings additions
+    healthData:"Health Data", connectHealth:"Connect Health Data", healthConnected:"Connected", disconnectCta:"Disconnect",
+    // premium / plan toggle
+    freeBadge:"FREE", premiumBadge:"PREMIUM", planToggleLabel:"Plan",
+    // offline
+    offlineTitle:"You're offline", offlineBody:"Your data is saved locally and will sync when you're back online.",
+  },
+  ar: {
+    appName:"نور", tagline:"وضوح في كل تمرين.",
+    tabSystem:"نظام التصميم", tabProduct:"شاشات التطبيق",
+    navDashboard:"الرئيسية", navWorkout:"التمرين", navCoach:"المدرب الذكي", navNutrition:"التغذية", navHistory:"السجل",
+    ob1Title:"ما هدفك الأساسي؟", ob1Sub:"هذا يحدد خطتك وأهدافك وتركيزك اليومي.",
+    goalLose:"خسارة الدهون", goalBuild:"بناء العضلات", goalMaintain:"الحفاظ على الوزن", goalPerform:"تحسين الأداء",
+    ob2Title:"أخبرنا عن جسمك", ob2Sub:"تُستخدم لحساب السعرات والعناصر الغذائية المستهدفة.",
+    weight:"الوزن", height:"الطول", targetWeight:"الوزن المستهدف",
+    ob3Title:"الخبرة والنشاط", ob3Sub:"لتتناسب الخطة مع تكيّف جسمك فعليًا.",
+    expBeginner:"مبتدئ", expIntermediate:"متوسط", expAdvanced:"متقدم",
+    activityLevel:"مستوى النشاط اليومي", actSedentary:"قليل الحركة", actLight:"نشاط خفيف", actModerate:"نشاط متوسط", actVeryActive:"نشاط عالٍ",
+    ob4Title:"خطّط أسبوع تمرينك", ob4Sub:"اختر أيامك والوقت المفضل للتمرين.",
+    trainingDays:"أيام التمرين أسبوعيًا", workoutTime:"الوقت المفضل للتمرين", timeMorning:"صباحًا", timeAfternoon:"ظهرًا", timeEvening:"مساءً", timeLate:"ليلًا متأخرًا",
+    ob5Title:"تفضيلات التغذية", ob5Sub:"سيُخصص نور الوجبات والبدائل بناءً على هذا.",
+    nutOmnivore:"عادي (كل شيء)", nutVegetarian:"نباتي (بيض/ألبان)", nutVegan:"نباتي صرف", nutPescatarian:"نباتي مع أسماك", nutHalal:"حلال", nutKeto:"قليل الكربوهيدرات / كيتو",
+    continue:"متابعة", back:"رجوع", finish:"إعداد خطتي", step:"خطوة",
+    goodMorning:"صباح الخير، سارة", todayIs:"الثلاثاء، ١٨ أغسطس",
+    dayScore:"نقاط يومك", dayScoreSub:"٣ من ٥ أهداف على المسار الصحيح",
+    workoutStatus:"التمرين", proteinStatus:"البروتين", waterStatus:"الماء", sleepStatus:"النوم", stepsStatus:"الخطوات",
+    done:"مكتمل", pending:"قيد الانتظار", onTrack:"على المسار", low:"متأخر",
+    goalJourney:"رحلة الهدف", current:"الحالي", target:"الهدف", dayInto:"اليوم", ofJourney:"من رحلتك",
+    todaysFocus:"تركيز اليوم", quickActions:"إجراءات سريعة",
+    logWorkout:"تسجيل تمرين", logMeal:"تسجيل وجبة", logWater:"إضافة ماء", logWeight:"تسجيل الوزن",
+    dailyInsight:"تحليل نور اليومي", insightBody:"متوسط بروتينك أقل بنسبة ١٨٪ عن هدفك في آخر ٣ أيام تمرين — وهذا يتزامن مع تقدّم أبطأ لاحظناه في تمرين البنش. جرّب إضافة ٣٠ جم بروتين بعد تمرين الليلة.",
+    askCoach:"اسأل المدرب عن هذا",
+    focusItem1:"يوم الدفع — الصدر والأكتاف والترايسبس", focusItem1Sub:"٦ تمارين · ~٥٢ دقيقة",
+    focusItem2:"متبقٍ ١٤٢ جم بروتين", focusItem2Sub:"٣ وجبات متبقية للتسجيل",
+    workoutPlanTitle:"يوم الدفع أ", workoutPlanSub:"الأسبوع ٦ · مرحلة التضخيم", exercises:"تمارين", minutes:"دقيقة",
+    startWorkout:"بدء التمرين", exerciseLibrary:"مكتبة التمارين", muscleGroups:"مجموعات العضلات",
+    chest:"الصدر", back2:"الظهر", legs:"الأرجل", shoulders:"الأكتاف", arms:"الذراعين", core:"البطن",
+    searchExercises:"ابحث عن تمرين", set:"المجموعة", reps:"التكرارات", weight2:"الوزن", logSet:"تسجيل المجموعة",
+    personalBest:"أفضل رقم شخصي", previous:"السابق", current2:"الحالي",
+    workoutHistory:"الجلسات الأخيرة", exerciseDetail:"التمرين", howTo:"طريقة الأداء", targetMuscles:"العضلات المستهدفة",
+    benchPress:"بنش بار", squat:"سكوات خلفي", deadlift:"ديدليفت", ohp:"ضغط كتف علوي", row:"تجديف بار", pulldown:"سحب علوي",
+    todaysNutrition:"تغذية اليوم", calories:"السعرات", protein:"البروتين", carbs:"الكربوهيدرات", fats:"الدهون",
+    remaining:"متبقٍ", meals:"الوجبات", breakfast:"الفطور", lunch:"الغداء", dinner:"العشاء", snack:"وجبة خفيفة",
+    logged:"تم التسجيل", notLogged:"لم يُسجَّل", addMeal:"إضافة وجبة", swapMeal:"استبدال بالذكاء الاصطناعي",
+    mealReplaceTitle:"بديل ذكي", mealReplaceSub:"عناصر غذائية مشابهة، وأنسب لما تبقى من يومك",
+    coachGreeting:"مرحبًا سارة — راجعت آخر ٧ أيام. تريدين الملخص السريع أم التفصيل الكامل؟",
+    coachQuick:"الملخص السريع", coachFull:"التفصيل الكامل",
+    coachInputPh:"اسأل مدرب نور أي شيء…",
+    insightsDaily:"يومي", insightsWeekly:"أسبوعي", insightsMonthly:"شهري",
+    weeklyInsightTitle:"هذا الأسبوع", weeklyInsightBody:"حجم تمارين الدفع ارتفع ٨٪ عن الأسبوع الماضي بينما انخفض متوسط نومك من ٧س٢٠د إلى ٦س٤٠د. التعافي، لا الجهد، هو على الأرجح ما يحدّ من تقدمك القادم.",
+    monthlyInsightTitle:"هذا الشهر", monthlyInsightBody:"انخفض وزن الجسم ١.٤ كجم بينما ارتفع أقصى وزن مقدّر للسكوات ٦٪ — اتجاه تحوّل جسدي قوي. ثبات البروتين (٥ من ٧ أيام) هو العامل المتبقي الأهم.",
+    weightProgress:"تقدّم الوزن", strengthProgress:"تقدّم القوة", nutritionHistory:"سجل التغذية", goalProgress:"تقدّم الهدف",
+    last30:"آخر ٣٠ يومًا", last90:"آخر ٩٠ يومًا", last12w:"آخر ١٢ أسبوعًا",
+    settings:"الإعدادات", language:"اللغة", appearance:"المظهر", light:"فاتح", dark:"داكن", system:"النظام",
+    notifications:"الإشعارات", units:"الوحدات", metric:"متري (كجم / سم)", imperial:"إمبراطوري (رطل / قدم)",
+    workoutReminders:"تذكير التمارين", mealReminders:"تذكير الوجبات", weeklySummary:"ملخص أسبوعي",
+    account:"الحساب", subscription:"الاشتراك", helpSupport:"المساعدة والدعم", signOut:"تسجيل الخروج",
+    unlockPremium:"فتح نور بريميوم", premiumSub:"كل ما تحتاجه للوصول فعليًا إلى هدفك.",
+    proAiCoach:"مدرب ذكي بلا حدود", proInsights:"تحليلات يومية وأسبوعية وشهرية", proPlans:"خطط تمرين مخصصة",
+    proNutrition:"أهداف تغذية مخصصة", proMeal:"بدائل وجبات ذكية", proStats:"إحصائيات متقدمة",
+    proReminders:"تذكيرات وجبات ذكية", proAds:"بدون إعلانات نهائيًا",
+    monthly:"شهري", yearly:"سنوي", saveBadge:"وفّر ٣٣٪", startTrial:"ابدأ تجربة ٧ أيام مجانًا", proLocked:"ميزة بريميوم",
+    unlock:"افتح مع بريميوم",
+    loadingState:"جاري تحميل بياناتك…", emptyWorkoutTitle:"لا توجد جلسات بعد", emptyWorkoutBody:"سجّل تمرينك الأول لتبدأ بتتبّع تقدمك.",
+    errorTitle:"تعذّر التحميل", errorBody:"تحقق من اتصالك وحاول مرة أخرى.", retry:"إعادة المحاولة",
+    startFirst:"ابدأ التمرين الأول",
+    welcomeTitle:"رحلتك الرياضية، بأسلوبك الخاص.", welcomeSub:"تابع تمارينك وتغذيتك وتقدمك وعاداتك اليومية — كل ذلك في مكان واحد.",
+    getStarted:"ابدأ الآن", haveAccount:"لديك حساب بالفعل؟ تسجيل الدخول",
+    planReadyTitle:"خطتك جاهزة", planReadyGoal:"الهدف", planReadyTarget:"الوزن المستهدف", planReadyTraining:"التمرين", startJourney:"ابدأ رحلتك",
+    dayScoreBreakdown:"تفاصيل نقاط اليوم", dayScoreFormula:"تُحسب من تمرين اليوم والتغذية والماء والنوم والخطوات. الأوزان تتغير حسب هدفك.",
+    viewFullHistory:"عرض السجل الكامل", equipment:"المعدات",
+    eqBodyweight:"وزن الجسم", eqDumbbell:"دمبل", eqBarbell:"بار", eqMachine:"جهاز",
+    recentPerformance:"الأداء الأخير",
+    leaveWorkoutTitle:"مغادرة التمرين؟", leaveWorkoutBody:"لم تنتهِ هذه الجلسة بعد.",
+    continueWorkoutCta:"متابعة التمرين", saveExit:"حفظ وخروج", discardWorkout:"تجاهل",
+    autosaveNote:"يتم حفظ كل مجموعة تلقائيًا فور تسجيلها.", finishWorkout:"إنهاء التمرين",
+    workoutCompleteTitle:"التمرين مكتمل", totalVolume:"الحجم الكلي", prHighlights:"أبرز التقدم", doneCta:"تم",
+    nutTabToday:"اليوم", nutTabPlan:"خطة الوجبات", plannedFor:"مخطط لـ",
+    contextIndicator:"السياق: التمرين · التغذية · الأهداف",
+    basedOnWeek:"بناءً على آخر ٧ أيام", basedOnMonth:"بناءً على آخر ٣٠ يومًا",
+    histOverview:"نظرة عامة", histWorkouts:"التمارين", histProgress:"التقدم",
+    thisWeekTitle:"هذا الأسبوع", avgProtein:"متوسط البروتين", avgSteps:"متوسط الخطوات", avgSleep:"متوسط النوم", weeklyGoalCompletion:"الهدف الأسبوعي",
+    aiSummary:"ملخص ذكي", weeklyAiSummary:"تحسّن الالتزام هذا الأسبوع — أُكملت ٣ من ٣ تمارين مخططة، والتزم البروتين بالهدف ٥ من ٧ أيام. النوم هو المؤشر الوحيد الذي يتراجع.",
+    strengthLocked:"اتجاهات القوة طويلة المدى وتحليل حجم التدريب.",
+    profileTitle:"الملف الشخصي", personalInfo:"المعلومات الشخصية", goalsSection:"الأهداف", trainingSection:"التمرين", nutritionPrefsSection:"التغذية",
+    healthData:"بيانات الصحة", connectHealth:"ربط بيانات الصحة", healthConnected:"متصل", disconnectCta:"إلغاء الربط",
+    freeBadge:"مجاني", premiumBadge:"بريميوم", planToggleLabel:"الخطة",
+    offlineTitle:"أنت غير متصل", offlineBody:"بياناتك محفوظة محليًا وستُزامَن عند عودة الاتصال.",
+  }
+};
+
+const state = {
+  theme:'dark', lang:'en', mainTab:'system',
+  productScreen:'onboarding',
+  obPhase:'welcome', // welcome | form | ready
+  obStep:1,
+  ob:{goal:'goalBuild', weight:68, height:165, targetWeight:62, exp:'expIntermediate', activity:'actModerate', days:4, time:'timeEvening', nutrition:'nutOmnivore'},
+  workoutView:'plan', // plan | detail | logging | library | summary
+  nutritionTab:'today', // today | plan
+  historyTab:'overview', // overview | workouts | progress
+  historySub:'weight', // weight | strength | goal (inside progress)
+  coachTab:'chat', // chat | insights
+  insightRange:'insightsWeekly',
+  plan:'premium', // premium | free — drives contextual paywall previews
+  showSettings:false,
+  showPremium:false,
+  showProfile:false,
+  showDayScore:false,
+  showExitConfirm:false,
+  showMealSheet:false,
+  demoState:'normal', // normal | loading | empty | error | offline
+  productView:'mobile', // mobile | admin
+  adminSection:'dashboard',
+  notif:{
+    workout:{on:true, timing:60},
+    meals:{on:true},
+    water:{on:false},
+    sleep:{on:false},
+    goals:{on:true},
+  },
+  notifTab:'prefs', // prefs | history
+  notifPreview:'normal', // normal | permissionAsk | permissionDenied | saved | error
+  beforeNotif:'dashboard',
+};
+
+function t(k){ return (STR[state.lang] && STR[state.lang][k]) || STR.en[k] || k; }
+
+/* ============================================================
+   Icons (consistent 1.75 stroke line set)
+   ============================================================ */
+function icon(name, size=20){
+  const s = size;
+  const common = `width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"`;
+  const paths = {
+    home:`<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9.5v-6h5v6h3a1 1 0 0 0 1-1v-9"/>`,
+    dumbbell:`<path d="M6.5 7v10M17.5 7v10M2.5 10v4M21.5 10v4M6.5 12h11"/>`,
+    chat:`<path d="M4 12a8 8 0 1 1 3.2 6.4L4 19.5l1.1-3A7.9 7.9 0 0 1 4 12Z"/><circle cx="9" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="12.5" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="0.9" fill="currentColor" stroke="none"/>`,
+    apple:`<path d="M15.5 8.3c-1 0-1.7.6-2.6.6-1 0-1.8-.6-2.8-.6-1.5 0-3.4 1.3-3.4 4 0 3.4 2.2 7.2 3.9 7.2.8 0 1.2-.5 2.3-.5s1.4.5 2.3.5c1.4 0 3.5-3.2 3.5-5.6-2-.6-2.3-3.3-2.2-5.6Zm-2.2-1.8c.4-.7 1-1.6.9-2.5-.8.1-1.7.6-2.2 1.3-.4.6-.9 1.5-.8 2.4.9.1 1.7-.5 2.1-1.2Z"/>`,
+    clock:`<circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.8 2"/>`,
+    flame:`<path d="M12 3s3 3 3 6.5c1 -.5 1.5-1.5 1.5-1.5.8 1.4 1.7 3 1.7 5A6.2 6.2 0 0 1 12 19a6.2 6.2 0 0 1-6.2-6c0-2.2 1.2-4 2.2-5.2 0 0 .3 1.5 1.3 2C9.3 6.5 12 3 12 3Z"/>`,
+    droplet:`<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/>`,
+    moon:`<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>`,
+    sun:`<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>`,
+    footprints:`<path d="M8 4c1.7 0 2.6 1.6 2.6 3.6 0 1.6-.6 2.4-.6 3.9 0 1.6 1 2 1 3.5A2.5 2.5 0 0 1 8.5 17.5C6.8 17.5 6 16 6 14c0-1.2.5-1.8.5-3.2C6.5 8.8 5.6 8 5.6 6.3 5.6 5 6.5 4 8 4Z"/><path d="M16.5 9c1.5 0 2.4 1.4 2.4 3.2 0 1.4-.6 2.1-.6 3.4 0 1.4.9 1.8.9 3.1a2.3 2.3 0 0 1-2.3 2.3c-1.5 0-2.3-1.3-2.3-3.1 0-1.1.5-1.6.5-2.8 0-1.7-.8-2.4-.8-3.9C14.3 9.9 15.2 9 16.5 9Z"/>`,
+    chevronEnd:`<path d="M9 6l6 6-6 6"/>`,
+    chevronStart:`<path d="M15 6l-6 6 6 6"/>`,
+    lock:`<rect x="5" y="10.5" width="14" height="9" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>`,
+    check:`<path d="M5 13l4.5 4.5L19 8"/>`,
+    plus:`<path d="M12 5v14M5 12h14"/>`,
+    settings:`<circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V19a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.5V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V10c.4.5.9.8 1.5 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/>`,
+    globe:`<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.3 3.5 5.3 3.5 8.5s-1.2 6.2-3.5 8.5c-2.3-2.3-3.5-5.3-3.5-8.5S9.7 5.8 12 3.5Z"/>`,
+    x:`<path d="M6 6l12 12M18 6L6 18"/>`,
+    search:`<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.5-4.5"/>`,
+    star:`<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.8Z"/>`,
+    trophy:`<path d="M8 5h8v4a4 4 0 0 1-8 0V5Z"/><path d="M8 6H5.5A1.5 1.5 0 0 0 4 7.5C4 9.5 5.5 11 8 11M16 6h2.5A1.5 1.5 0 0 1 20 7.5c0 2-1.5 3.5-4 3.5"/><path d="M10 13v2a2 2 0 0 0 2 2 2 2 0 0 0 2-2v-2M9 20h6"/>`,
+    pencil:`<path d="M16.5 4.5l3 3L8 19H5v-3Z"/>`,
+    send:`<path d="M4.5 12L19.5 4.5 13 19l-2-6-6-1Z"/>`,
+    mic:`<rect x="9" y="3.5" width="6" height="10.5" rx="3"/><path d="M6 11.5a6 6 0 0 0 12 0M12 18v3"/>`,
+    refresh:`<path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5"/>`,
+    filter:`<path d="M4 6h16M7.5 12h9M10.5 18h3"/>`,
+    calendar:`<rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8 3.5v3.5M16 3.5v3.5"/>`,
+    bell:`<path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5 1.5 5h-15S6 14 6 10Z"/><path d="M10 19a2 2 0 0 0 4 0"/>`,
+    user:`<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-3.5 4-5.5 7-5.5s6 2 7 5.5"/>`,
+    logout:`<path d="M14 7V5.5A1.5 1.5 0 0 0 12.5 4h-6A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20h6a1.5 1.5 0 0 0 1.5-1.5V17M10 12h10m0 0-3-3m3 3-3 3"/>`,
+    scale:`<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.3 1.3M9 3.5h6"/>`,
+    barbell:`<path d="M3 12h3M18 12h3M6 12h12M6 9v6M18 9v6M4.5 10v4M19.5 10v4"/>`,
+    chart:`<path d="M4 20V10M11 20V4M18 20v-7"/><path d="M2.5 20.5h19"/>`,
+    inbox:`<path d="M3.5 12h4.2l1.3 2.5h5.9L16.2 12h4.3"/><path d="M4.8 7 3.5 12v6a1.5 1.5 0 0 0 1.5 1.5h14a1.5 1.5 0 0 0 1.5-1.5v-6L19.2 7a1.5 1.5 0 0 0-1.4-1H6.2a1.5 1.5 0 0 0-1.4 1Z"/>`,
+  };
+  return `<svg ${common}>${paths[name]||''}</svg>`;
+}
+
+/* ============================================================
+   Shared components (render functions)
+   ============================================================ */
+function ring(pct, size, stroke, colorVar, centerHtml){
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const off = c - (Math.min(pct,100)/100) * c;
+  return `
+  <div class="ring-wrap" style="width:${size}px;height:${size}px;">
+    <svg width="${size}" height="${size}">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" stroke="var(--surface-3)" stroke-width="${stroke}" fill="none"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" stroke="${colorVar}" stroke-width="${stroke}" fill="none"
+        stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset var(--dur-2) var(--ease)"/>
+    </svg>
+    <div class="ring-center">${centerHtml}</div>
+  </div>`;
+}
+
+function statusRow(iconName, label, valueText, statusText, statusType){
+  // statusType: good | warn | bad
+  const colorVar = statusType==='good' ? 'var(--success)' : statusType==='warn' ? 'var(--warning)' : 'var(--danger)';
+  const badgeBg = statusType==='good' ? 'var(--success-tint)' : statusType==='warn' ? 'var(--warning-tint)' : 'var(--danger-tint)';
+  return `
+  <div class="list-item">
+    <div class="icon-badge">${icon(iconName,18)}</div>
+    <div class="grow">
+      <div class="t-body-lg">${label}</div>
+      <div class="t-caption">${valueText}</div>
+    </div>
+    <div style="background:${badgeBg};color:${colorVar};padding:4px 10px;border-radius:var(--r-pill);font-size:11px;font-weight:700;">${statusText}</div>
+  </div>`;
+}
+
+function proLockCard(title, sub){
+  return `
+  <div class="card locked">
+    <div class="locked-content">
+      <div class="t-title mb-2">${title}</div>
+      <div class="t-body mb-4">${sub}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:64%"></div></div>
+    </div>
+    <div class="locked-overlay">
+      <div class="lock-circle">${icon('lock',16)}</div>
+      <div class="t-body-lg">${t('proLocked')}</div>
+      <button class="btn btn-primary btn-sm" onclick="openPremium()">${t('unlock')}</button>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   PRODUCT: bottom nav config
+   ============================================================ */
+const NAV_ITEMS = [
+  {key:'dashboard', icon:'home', label:'navDashboard'},
+  {key:'workout', icon:'dumbbell', label:'navWorkout'},
+  {key:'coach', icon:'chat', label:'navCoach', dot:true},
+  {key:'nutrition', icon:'apple', label:'navNutrition'},
+  {key:'history', icon:'clock', label:'navHistory'},
+];
+
+function bottomNav(active){
+  return `<div class="bottom-nav">
+    ${NAV_ITEMS.map(n=>`
+      <button class="nav-item ${active===n.key?'active':''}" onclick="goScreen('${n.key}')" aria-label="${t(n.label)}" title="${t(n.label)}">
+        ${icon(n.icon,22)}${n.dot?'<span class="nav-dot"></span>':''}
+      </button>`).join('')}
+  </div>`;
+}
+
+function statusBar(){
+  const time = state.lang==='ar' ? '٩:٤١' : '9:41';
+  return `<div class="status-bar">
+    <span>${time}</span>
+    <span style="display:flex;gap:5px;align-items:center;">
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="6" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="7" rx="0.5"/><rect x="9" y="1.5" width="3" height="9.5" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M1 4.5a9 9 0 0 1 13 0M3.3 6.9a5.5 5.5 0 0 1 8.4 0M5.7 9.1a2.4 2.4 0 0 1 3.6 0"/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x="0.75" y="0.75" width="19.5" height="9.5" rx="2.25" stroke="currentColor" stroke-width="1"/><rect x="2" y="2" width="15" height="7" rx="1.2" fill="currentColor"/><rect x="21" y="3.5" width="1.6" height="4" rx="0.8" fill="currentColor"/></svg>
+    </span>
+  </div>`;
+}
+
+function goScreen(s){ state.productScreen = s; state.workoutView='plan'; render(); }
+
+/* ============================================================
+   ONBOARDING
+   ============================================================ */
+function screenOnboarding(){
+  if(state.obPhase==='welcome') return screenWelcome();
+  if(state.obPhase==='ready') return screenPlanReady();
+  return screenOnboardingForm();
+}
+
+function screenWelcome(){
+  return `
+    ${statusBar()}
+    <div class="phone-screen flex-col" style="height:100%;justify-content:center;padding-bottom:100px;">
+      <div class="flex justify-center mb-6">
+        <div style="width:64px;height:64px;border-radius:20px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:800;font-size:26px;box-shadow:var(--shadow-glow);">N</div>
+      </div>
+      <div class="t-display-xl text-center mb-3">${t('welcomeTitle')}</div>
+      <div class="t-body text-center mb-2" style="padding:0 var(--sp-3)">${t('welcomeSub')}</div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:var(--sp-5);background:linear-gradient(0deg,var(--bg) 65%,transparent);">
+      <button class="btn btn-primary btn-full mb-3" onclick="obGoForm()">${t('getStarted')}</button>
+      <div class="t-caption text-center">${t('haveAccount')}</div>
+    </div>`;
+}
+
+function screenPlanReady(){
+  return `
+    ${statusBar()}
+    <div class="phone-screen flex-col" style="height:100%;justify-content:center;padding-bottom:100px;">
+      <div class="flex justify-center mb-5">
+        <div class="icon-badge accent" style="width:56px;height:56px;box-shadow:var(--shadow-glow)">${icon('trophy',26)}</div>
+      </div>
+      <div class="t-display-lg text-center mb-6">${t('planReadyTitle')}</div>
+      <div class="card flex-col gap-4">
+        <div class="flex justify-between items-center">
+          <span class="t-caption">${t('planReadyGoal')}</span>
+          <span class="t-body-lg" style="font-weight:700">${t(state.ob.goal)}</span>
+        </div>
+        <div class="divider" style="margin:0"></div>
+        <div class="flex justify-between items-center">
+          <span class="t-caption">${t('planReadyTarget')}</span>
+          <span class="t-mono-md">${state.ob.targetWeight} kg</span>
+        </div>
+        <div class="divider" style="margin:0"></div>
+        <div class="flex justify-between items-center">
+          <span class="t-caption">${t('planReadyTraining')}</span>
+          <span class="t-mono-md">${state.ob.days}${state.lang==='ar'?'':'x'}/${state.lang==='ar'?'٧':'7'}</span>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:var(--sp-5);background:linear-gradient(0deg,var(--bg) 65%,transparent);">
+      <button class="btn btn-primary btn-full" onclick="obEnterApp()">${t('startJourney')}</button>
+    </div>`;
+}
+
+function screenOnboardingForm(){
+  const step = state.obStep;
+  const total = 5;
+  const segs = Array.from({length:total},(_,i)=>{
+    const n=i+1; return `<div class="seg ${n<step?'done':n===step?'active':''}"></div>`;
+  }).join('');
+
+  let body = '';
+  if(step===1){
+    const opts = [['goalLose','flame'],['goalBuild','barbell'],['goalMaintain','check'],['goalPerform','trophy']];
+    body = `
+      <div class="t-display-lg mb-2">${t('ob1Title')}</div>
+      <div class="t-body mb-6">${t('ob1Sub')}</div>
+      <div class="flex-col gap-3">
+        ${opts.map(([key,ic])=>`
+          <button class="card-flat flex items-center gap-3 w-full" style="border:1.5px solid ${state.ob.goal===key?'var(--accent-strong)':'transparent'};cursor:pointer;text-align:start;background:${state.ob.goal===key?'var(--accent-tint)':'var(--surface-2)'}"
+            onclick="setOb('goal','${key}')">
+            <div class="icon-badge ${state.ob.goal===key?'accent':''}">${icon(ic,18)}</div>
+            <div class="t-body-lg grow">${t(key)}</div>
+            ${state.ob.goal===key?`<div style="color:var(--accent-strong)">${icon('check',18)}</div>`:''}
+          </button>`).join('')}
+      </div>`;
+  } else if(step===2){
+    body = `
+      <div class="t-display-lg mb-2">${t('ob2Title')}</div>
+      <div class="t-body mb-6">${t('ob2Sub')}</div>
+      <div class="flex-col gap-5">
+        <div class="field">
+          <label>${t('weight')} (kg)</label>
+          <div class="stepper">
+            <button onclick="bump('weight',-1)">−</button>
+            <div class="val">${state.ob.weight}</div>
+            <button onclick="bump('weight',1)">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>${t('height')} (cm)</label>
+          <div class="stepper">
+            <button onclick="bump('height',-1)">−</button>
+            <div class="val">${state.ob.height}</div>
+            <button onclick="bump('height',1)">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>${t('targetWeight')} (kg)</label>
+          <div class="stepper">
+            <button onclick="bump('targetWeight',-1)">−</button>
+            <div class="val">${state.ob.targetWeight}</div>
+            <button onclick="bump('targetWeight',1)">+</button>
+          </div>
+        </div>
+      </div>`;
+  } else if(step===3){
+    const exps=['expBeginner','expIntermediate','expAdvanced'];
+    const acts=['actSedentary','actLight','actModerate','actVeryActive'];
+    body = `
+      <div class="t-display-lg mb-2">${t('ob3Title')}</div>
+      <div class="t-body mb-5">${t('ob3Sub')}</div>
+      <div class="t-caption mb-2">${t('trainingDays')==='' ? '' : ''}</div>
+      <div class="flex gap-2 wrap mb-6">
+        ${exps.map(e=>`<div class="chip ${state.ob.exp===e?'selected':''}" onclick="setOb('exp','${e}')">${t(e)}</div>`).join('')}
+      </div>
+      <div class="field mb-2"><label>${t('activityLevel')}</label></div>
+      <div class="flex gap-2 wrap">
+        ${acts.map(a=>`<div class="chip ${state.ob.activity===a?'selected':''}" onclick="setOb('activity','${a}')">${t(a)}</div>`).join('')}
+      </div>`;
+  } else if(step===4){
+    body = `
+      <div class="t-display-lg mb-2">${t('ob4Title')}</div>
+      <div class="t-body mb-6">${t('ob4Sub')}</div>
+      <div class="field mb-2"><label>${t('trainingDays')}</label></div>
+      <div class="stepper mb-6">
+        <button onclick="bump('days',-1)">−</button>
+        <div class="val">${state.ob.days}</div>
+        <button onclick="bump('days',1)">+</button>
+      </div>
+      <div class="field mb-2"><label>${t('workoutTime')}</label></div>
+      <div class="flex gap-2 wrap">
+        ${['timeMorning','timeAfternoon','timeEvening','timeLate'].map(tm=>`<div class="chip ${state.ob.time===tm?'selected':''}" onclick="setOb('time','${tm}')">${t(tm)}</div>`).join('')}
+      </div>`;
+  } else if(step===5){
+    const opts=['nutOmnivore','nutVegetarian','nutVegan','nutPescatarian','nutHalal','nutKeto'];
+    body = `
+      <div class="t-display-lg mb-2">${t('ob5Title')}</div>
+      <div class="t-body mb-6">${t('ob5Sub')}</div>
+      <div class="flex-col gap-3">
+        ${opts.map(o=>`
+          <button class="card-flat flex items-center gap-3 w-full" style="border:1.5px solid ${state.ob.nutrition===o?'var(--accent-strong)':'transparent'};cursor:pointer;text-align:start;background:${state.ob.nutrition===o?'var(--accent-tint)':'var(--surface-2)'}"
+            onclick="setOb('nutrition','${o}')">
+            <div class="t-body-lg grow">${t(o)}</div>
+            ${state.ob.nutrition===o?`<div style="color:var(--accent-strong)">${icon('check',18)}</div>`:''}
+          </button>`).join('')}
+      </div>`;
+  }
+
+  return `
+    ${statusBar()}
+    <div class="phone-screen">
+      <div class="phone-topbar">
+        <div class="flex items-center gap-3 mb-1">
+          <button class="btn-icon" style="height:36px;width:36px" onclick="obBack()">${icon('chevronStart',18)}</button>
+          <div class="grow"><div class="t-caption">${t('step')} ${step}/${total}</div></div>
+        </div>
+        <div class="steps-progress">${segs}</div>
+      </div>
+      <div style="padding-top:8px;padding-bottom:20px;">${body}</div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:var(--sp-5);background:linear-gradient(0deg,var(--bg) 60%,transparent);">
+      <button class="btn btn-primary btn-full" onclick="obNext()">${step===total? t('finish') : t('continue')}</button>
+    </div>`;
+}
+function setOb(k,v){ state.ob[k]=v; render(); }
+function bump(k,d){ state.ob[k]=Math.max(1,state.ob[k]+d); render(); }
+function obGoForm(){ state.obPhase='form'; state.obStep=1; render(); }
+function obNext(){ if(state.obStep<5){ state.obStep++; } else { state.obPhase='ready'; } render(); }
+function obBack(){ if(state.obStep>1){ state.obStep--; } else { state.obPhase='welcome'; } render(); }
+function obEnterApp(){ state.productScreen='dashboard'; state.obPhase='welcome'; state.obStep=1; render(); }
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+function screenDashboard(){
+  if(state.demoState==='loading'){ return wrapSimpleScreen(loadingBlock()); }
+  const scoreCenter = `<div class="t-mono-lg">78</div>`;
+  const goalCenter = `<div class="t-mono-md">58%</div>`;
+  return `
+    ${statusBar()}
+    <div class="phone-screen">
+      <div class="phone-topbar flex items-center justify-between">
+        <div>
+          <div class="t-title">${t('goodMorning')}</div>
+          <div class="t-caption">${t('todayIs')}</div>
+        </div>
+        <button class="avatar-btn" onclick="openProfile()">S</button>
+      </div>
+
+      <div class="dash-grid mb-3">
+        <div class="dash-tile tall clickable" onclick="openDayScore()" title="${t('dayScoreSub')}">
+          <div class="t-eyebrow">${t('dayScore')}</div>
+          <div class="flex justify-center">${ring(78,68,7,'var(--accent-strong)',scoreCenter)}</div>
+        </div>
+
+        <div class="dash-tile tall">
+          <div class="t-eyebrow">${t('goalJourney')}</div>
+          <div class="flex justify-center">${ring(58,68,7,'var(--accent-strong)',goalCenter)}</div>
+        </div>
+
+        <div class="dash-tile clickable" onclick="goScreen('workout')">
+          <div class="flex items-center justify-between">
+            <div class="t-eyebrow">${t('workoutStatus')}</div>
+            <div class="icon-badge success" style="width:26px;height:26px">${icon('check',12)}</div>
+          </div>
+          <div>
+            <div class="t-body-lg">Upper Body</div>
+            <div class="t-caption">18:00</div>
+          </div>
+        </div>
+
+        <div class="dash-tile clickable" onclick="goScreen('nutrition')">
+          <div class="t-eyebrow">${t('proteinStatus')}</div>
+          <div>
+            <div class="t-mono-md mb-1">96 / 150g</div>
+            <div class="bar-track thin"><div class="bar-fill" style="width:64%;background:var(--danger)"></div></div>
+          </div>
+        </div>
+
+        <div class="dash-tile">
+          <div class="flex items-center justify-between">
+            <div class="t-eyebrow">${t('waterStatus')}</div>
+            <div style="color:var(--warning)">${icon('droplet',16)}</div>
+          </div>
+          <div class="t-mono-md">1.6 / 2.5L</div>
+        </div>
+
+        <div class="dash-tile">
+          <div class="flex items-center justify-between">
+            <div class="t-eyebrow">${t('sleepStatus')}</div>
+            <div style="color:var(--danger)">${icon('moon',16)}</div>
+          </div>
+          <div class="t-mono-md">6h 40m</div>
+        </div>
+
+        <div class="dash-tile">
+          <div class="flex items-center justify-between">
+            <div class="t-eyebrow">${t('stepsStatus')}</div>
+            <div style="color:var(--warning)">${icon('footprints',16)}</div>
+          </div>
+          <div class="t-mono-md">8,240</div>
+        </div>
+
+        <div class="dash-tile clickable" onclick="goScreen('workout')">
+          <div class="flex items-center justify-between">
+            <div class="t-eyebrow">${t('todaysFocus')}</div>
+            <div style="color:var(--text-tertiary)">${icon('chevronEnd',14)}</div>
+          </div>
+          <div class="t-body-lg">${t('focusItem1').split('—')[1] ? t('focusItem1').split('—')[1].trim() : t('focusItem1')}</div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-5" style="overflow-x:auto;padding-bottom:2px;">
+        ${quickAction('dumbbell', t('logWorkout'))}
+        ${quickAction('apple', t('logMeal'))}
+        ${quickAction('droplet', t('logWater'))}
+        ${quickAction('scale', t('logWeight'))}
+      </div>
+
+      <div class="card mb-6" style="border-color:var(--accent-tint-strong);background:linear-gradient(160deg,var(--accent-tint),var(--surface) 60%)">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="icon-badge accent" style="width:32px;height:32px">${icon('star',15)}</div>
+          <div class="t-eyebrow">${t('dailyInsight')}</div>
+        </div>
+        <div class="t-body-lg mb-4" style="color:var(--text-primary)">${t('insightBody')}</div>
+        <button class="btn btn-secondary btn-sm" onclick="openCoachFromInsight()">${t('askCoach')} ${icon('chevronEnd',14)}</button>
+      </div>
+    </div>
+    ${bottomNav('dashboard')}`;
+}
+function quickAction(ic,label){
+  return `<button class="card-flat flex-col items-center gap-2" style="cursor:pointer;padding:12px 10px;border:1px solid var(--border);flex-shrink:0;width:84px;" onclick="render()">
+    <div class="icon-badge accent" style="width:34px;height:34px">${icon(ic,16)}</div>
+    <div class="t-caption" style="text-align:center;color:var(--text-secondary);font-weight:600;">${label}</div>
+  </button>`;
+}
+function openCoachFromInsight(){ state.productScreen='coach'; state.coachTab='chat'; render(); }
+
+/* ============================================================
+   WORKOUT
+   ============================================================ */
+const EXLIB = [
+  {key:'benchPress', muscle:'chest', best:'82.5 kg × 5'},
+  {key:'squat', muscle:'legs', best:'110 kg × 5'},
+  {key:'deadlift', muscle:'back', best:'140 kg × 3'},
+  {key:'ohp', muscle:'shoulders', best:'52.5 kg × 6'},
+  {key:'row', muscle:'back', best:'70 kg × 8'},
+  {key:'pulldown', muscle:'back', best:'65 kg × 10'},
+];
+
+function screenWorkout(){
+  if(state.demoState==='loading') return wrapSimpleScreen(loadingBlock());
+  if(state.demoState==='empty') return wrapSimpleScreen(emptyBlock('emptyWorkoutTitle','emptyWorkoutBody','startFirst','dumbbell'));
+  if(state.demoState==='error') return wrapSimpleScreen(errorBlock());
+  if(state.demoState==='offline') return wrapSimpleScreen(offlineBlock());
+
+  let content='';
+  if(state.workoutView==='plan') content = workoutPlanView();
+  else if(state.workoutView==='logging') content = workoutLoggingView();
+  else if(state.workoutView==='library') content = exerciseLibraryView();
+  else if(state.workoutView==='detail') content = exerciseDetailView();
+  else if(state.workoutView==='summary') content = workoutSummaryView();
+
+  return `
+    ${statusBar()}
+    <div class="phone-screen">${content}</div>
+    ${state.workoutView!=='summary' ? bottomNav('workout') : ''}`;
+}
+
+function workoutPlanView(){
+  const planExercises = EXLIB.slice(0,4);
+  return `
+    <div class="phone-topbar flex items-center justify-between">
+      <div class="t-title">${t('navWorkout')}</div>
+      <button class="btn-icon" onclick="setWorkoutView('library')">${icon('search',18)}</button>
+    </div>
+    <div class="card mb-5" style="background:linear-gradient(160deg,var(--accent-tint),var(--surface) 55%);border-color:var(--accent-tint-strong)">
+      <div class="t-eyebrow mb-1">${t('workoutPlanSub')}</div>
+      <div class="t-display-lg mb-3">${t('workoutPlanTitle')}</div>
+      <div class="flex items-center gap-4 mb-4">
+        <div class="flex items-center gap-1 t-caption"><span style="color:var(--text-secondary)">${icon('dumbbell',14)}</span>${planExercises.length} ${t('exercises')}</div>
+        <div class="flex items-center gap-1 t-caption"><span style="color:var(--text-secondary)">${icon('clock',14)}</span>52 ${t('minutes')}</div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="setWorkoutView('logging')">${t('startWorkout')}</button>
+    </div>
+
+    <div class="flex-col gap-3 mb-5">
+      ${planExercises.map((ex,i)=>`
+        <div class="card-flat flex items-center gap-3" style="cursor:pointer" onclick="openExercise('${ex.key}')">
+          <div class="t-mono-sm" style="width:22px;color:var(--text-tertiary)">0${i+1}</div>
+          <div class="icon-badge">${icon('barbell',17)}</div>
+          <div class="grow">
+            <div class="t-body-lg">${t(ex.key)}</div>
+            <div class="t-caption">4 ${t('set')==='Set'?'sets':t('set')} · 8-10 ${t('reps')}</div>
+          </div>
+          <div style="color:var(--text-tertiary)">${icon('chevronEnd',16)}</div>
+        </div>`).join('')}
+    </div>
+
+    <button class="btn btn-ghost btn-full mb-6" style="justify-content:center;color:var(--text-secondary)" onclick="goHistoryWorkouts()">
+      ${t('viewFullHistory')} ${icon('chevronEnd',14)}
+    </button>`;
+}
+function goHistoryWorkouts(){ state.productScreen='history'; state.historyTab='workouts'; render(); }
+
+function setWorkoutView(v){ state.workoutView=v; render(); }
+function openExercise(key){ state.currentExercise=key; state.workoutView='detail'; render(); }
+
+function exerciseLibraryView(){
+  const groups=['chest','back','legs','shoulders','arms','core'];
+  const equip=['eqBodyweight','eqDumbbell','eqBarbell','eqMachine'];
+  return `
+    <div class="phone-topbar flex items-center gap-3">
+      <button class="btn-icon" onclick="setWorkoutView('plan')">${icon('chevronStart',18)}</button>
+      <div class="t-title">${t('exerciseLibrary')}</div>
+    </div>
+    <div class="input flex items-center gap-2 mb-4" style="color:var(--text-tertiary)">
+      ${icon('search',16)}<span class="t-body" style="color:var(--text-tertiary)">${t('searchExercises')}</span>
+    </div>
+    <div class="t-caption mb-2">${t('muscleGroups')}</div>
+    <div class="flex gap-2 wrap mb-4">
+      ${groups.map((g,i)=>`<div class="chip ${i===2?'selected':''}">${t(g)}</div>`).join('')}
+    </div>
+    <div class="t-caption mb-2">${t('equipment')}</div>
+    <div class="flex gap-2 wrap mb-5">
+      ${equip.map((e,i)=>`<div class="chip ${i===2?'selected':''}">${t(e)}</div>`).join('')}
+    </div>
+    <div class="flex-col gap-3">
+      ${EXLIB.map(ex=>`
+        <div class="card-flat flex items-center gap-3" style="cursor:pointer" onclick="openExercise('${ex.key}')">
+          <div class="icon-badge">${icon('barbell',17)}</div>
+          <div class="grow">
+            <div class="t-body-lg">${t(ex.key)}</div>
+            <div class="t-caption">${t(ex.muscle) || ex.muscle}</div>
+          </div>
+          <div class="t-mono-sm text-accent">${ex.best}</div>
+        </div>`).join('')}
+    </div>
+    <div style="height:20px"></div>`;
+}
+
+function exerciseDetailView(){
+  const key = state.currentExercise || 'benchPress';
+  return `
+    <div class="phone-topbar flex items-center gap-3">
+      <button class="btn-icon" onclick="setWorkoutView('plan')">${icon('chevronStart',18)}</button>
+      <div class="t-title">${t(key)}</div>
+    </div>
+    <div class="card-flat mb-4" style="height:150px;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary)">
+      ${icon('barbell',48)}
+    </div>
+    <div class="flex gap-2 mb-5">
+      <div class="chip selected">${t('chest')}</div>
+      <div class="chip">${t('shoulders')}</div>
+      <div class="chip">${t('arms')}</div>
+    </div>
+    <div class="t-eyebrow mb-2">${t('howTo')}</div>
+    <div class="t-body mb-5">Lie flat on the bench, grip slightly wider than shoulders. Lower the bar to mid-chest with control, then press up until arms are extended without locking out aggressively.</div>
+
+    <div class="card mb-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="t-eyebrow">${t('personalBest')}</div>
+        <div class="pro-badge">${icon('trophy',11)} PB</div>
+      </div>
+      <div class="flex items-end gap-2">
+        <div class="t-mono-xl">82.5</div><div class="t-body">kg × 5 reps</div>
+      </div>
+      <div class="t-caption mt-1">Set on Aug 9 · +5 kg vs previous best</div>
+    </div>
+
+    <div class="t-eyebrow mb-2">${t('recentPerformance')}</div>
+    <div class="grid grid-2 gap-3 mb-5">
+      <div class="card-flat">
+        <div class="t-caption mb-1">${t('previous')}</div>
+        <div class="t-mono-lg">77.5 kg</div>
+        <div class="t-caption">5 × 5</div>
+      </div>
+      <div class="card-flat" style="border:1px solid var(--accent-strong)">
+        <div class="t-caption mb-1 text-accent">${t('current2')}</div>
+        <div class="t-mono-lg">82.5 kg</div>
+        <div class="t-caption">5 × 5</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-full mb-6" style="justify-content:center;color:var(--text-secondary)" onclick="goHistoryWorkouts()">
+      ${t('viewFullHistory')} ${icon('chevronEnd',14)}
+    </button>`;
+}
+
+function workoutLoggingView(){
+  return `
+    <div class="phone-topbar flex items-center gap-3">
+      <button class="btn-icon" onclick="requestExitWorkout()">${icon('x',18)}</button>
+      <div class="grow">
+        <div class="t-title">${t('benchPress')}</div>
+        <div class="t-caption">1 ${t('exerciseDetail')==='Exercise'?'of 4':'/ 4'}</div>
+      </div>
+      <div class="t-mono-md text-accent">14:32</div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="flex items-center justify-between mb-4">
+        <div class="t-eyebrow">${t('set')} 3</div>
+        <div class="pro-badge" style="background:var(--success-tint);border-color:var(--success);color:var(--success)">${icon('trophy',11)} ${t('personalBest')}</div>
+      </div>
+      <div class="grid grid-2 gap-4 mb-5">
+        <div class="field">
+          <label>${t('weight')} (kg)</label>
+          <div class="stepper"><button>−</button><div class="val">82.5</div><button>+</button></div>
+        </div>
+        <div class="field">
+          <label>${t('reps')}</label>
+          <div class="stepper"><button>−</button><div class="val">5</div><button>+</button></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full">${t('logSet')}</button>
+    </div>
+    <div class="flex items-center gap-2 mb-5 t-caption">
+      <span style="color:var(--success)">${icon('check',13)}</span>${t('autosaveNote')}
+    </div>
+
+    <div class="t-eyebrow mb-3">${t('set')}s</div>
+    <div class="flex-col gap-2 mb-6">
+      ${[1,2].map(n=>`
+        <div class="list-item">
+          <div class="icon-badge success" style="width:32px;height:32px">${icon('check',14)}</div>
+          <div class="grow t-body-lg">${t('set')} ${n}</div>
+          <div class="t-mono-sm">80 kg × 5</div>
+        </div>`).join('')}
+      <div class="list-item">
+        <div class="icon-badge" style="width:32px;height:32px;border:1.5px dashed var(--border-strong);background:transparent"></div>
+        <div class="grow t-body" style="color:var(--text-tertiary)">${t('set')} 4</div>
+      </div>
+    </div>
+    <button class="btn btn-secondary btn-full mb-6" onclick="finishWorkout()">${t('finishWorkout')}</button>`;
+}
+
+function requestExitWorkout(){ state.showExitConfirm=true; render(); }
+function closeExitConfirm(){ state.showExitConfirm=false; render(); }
+function exitConfirmModal(){
+  if(!state.showExitConfirm) return '';
+  return `
+  <div class="modal-center">
+    <div class="modal-card">
+      <div class="t-title mb-2">${t('leaveWorkoutTitle')}</div>
+      <div class="t-body mb-5">${t('leaveWorkoutBody')}</div>
+      <div class="flex-col gap-2">
+        <button class="btn btn-primary btn-full" onclick="closeExitConfirm()">${t('continueWorkoutCta')}</button>
+        <button class="btn btn-secondary btn-full" onclick="exitWorkout(true)">${t('saveExit')}</button>
+        <button class="btn btn-danger btn-full" onclick="exitWorkout(false)">${t('discardWorkout')}</button>
+      </div>
+    </div>
+  </div>`;
+}
+function exitWorkout(save){ state.showExitConfirm=false; state.workoutView='plan'; render(); }
+function finishWorkout(){ state.workoutView='summary'; render(); }
+
+function workoutSummaryView(){
+  return `
+    <div class="phone-topbar flex-col items-center text-center" style="padding-top:24px">
+      <div class="icon-badge success mb-4" style="width:56px;height:56px">${icon('check',26)}</div>
+      <div class="t-display-lg mb-1">${t('workoutCompleteTitle')}</div>
+      <div class="t-caption">${t('workoutPlanTitle')} · 52 ${t('minutes')}</div>
+    </div>
+    <div class="grid grid-3 gap-3 mb-5">
+      <div class="card-flat text-center"><div class="t-mono-lg">6</div><div class="t-caption">${t('exercises')}</div></div>
+      <div class="card-flat text-center"><div class="t-mono-lg">18</div><div class="t-caption">${t('set')}s</div></div>
+      <div class="card-flat text-center"><div class="t-mono-lg">4,820</div><div class="t-caption">kg · ${t('totalVolume')}</div></div>
+    </div>
+    <div class="t-eyebrow mb-3">${t('prHighlights')}</div>
+    <div class="flex-col gap-3 mb-6">
+      ${historyMini('Bench Press','','','+5 kg')}
+      ${historyMini('Overhead Press','','','+2 reps')}
+    </div>
+    <button class="btn btn-primary btn-full mb-3" onclick="doneWorkout()">${t('doneCta')}</button>
+    <button class="btn btn-ghost btn-full mb-6" onclick="goHistoryWorkouts()">${t('viewFullHistory')}</button>`;
+}
+function doneWorkout(){ state.workoutView='plan'; state.productScreen='dashboard'; render(); }
+
+function historyMini(title,date,dur,note){
+  const meta = [date,dur].filter(Boolean).join(' · ');
+  return `<div class="card-flat flex items-center gap-3">
+    <div class="icon-badge success">${icon('check',16)}</div>
+    <div class="grow">
+      <div class="t-body-lg">${title}</div>
+      ${meta?`<div class="t-caption">${meta}</div>`:''}
+    </div>
+    <div class="t-caption text-accent" style="font-weight:700">${note}</div>
+  </div>`;
+}
+
+/* ============================================================
+   NUTRITION
+   ============================================================ */
+function screenNutrition(){
+  if(state.demoState==='loading') return wrapSimpleScreen(loadingBlock());
+  return `
+    ${statusBar()}
+    <div class="phone-screen">
+      <div class="phone-topbar">
+        <div class="t-title mb-3">${t('navNutrition')}</div>
+        <div class="segmented">
+          <button class="${state.nutritionTab==='today'?'active':''}" onclick="setNutritionTab('today')">${t('nutTabToday')}</button>
+          <button class="${state.nutritionTab==='plan'?'active':''}" onclick="setNutritionTab('plan')">${t('nutTabPlan')}</button>
+        </div>
+      </div>
+      ${state.nutritionTab==='today' ? nutritionTodayView() : nutritionPlanView()}
+    </div>
+    ${bottomNav('nutrition')}`;
+}
+function setNutritionTab(v){ state.nutritionTab=v; render(); }
+
+function nutritionTodayView(){
+  const macroCenter = `<div class="t-mono-lg">1,840</div><div class="t-caption">${t('remaining')}</div>`;
+  const meals = [
+    {key:'breakfast', kcal:420, done:true, name:'Oats, eggs & berries'},
+    {key:'lunch', kcal:560, done:true, name:'Grilled chicken bowl'},
+    {key:'dinner', kcal:0, done:false, name:null},
+    {key:'snack', kcal:0, done:false, name:null},
+  ];
+  return `
+      <div class="card mb-5" style="margin-top:14px">
+        <div class="flex items-center gap-5 mb-4">
+          ${ring(62,90,9,'var(--accent-strong)', macroCenter)}
+          <div class="grow flex-col gap-3">
+            ${macroBar(t('protein'),96,150,'var(--accent-strong)')}
+            ${macroBar(t('carbs'),148,220,'var(--info)')}
+            ${macroBar(t('fats'),42,65,'var(--warning)')}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mb-3">
+        <div class="t-eyebrow">${t('meals')}</div>
+        <button class="btn btn-ghost btn-sm" style="height:32px">${icon('plus',14)} ${t('addMeal')}</button>
+      </div>
+      <div class="flex-col gap-3 mb-6">
+        ${meals.map(m=>`
+          <div class="card-flat flex items-center gap-3">
+            <div class="icon-badge ${m.done?'success':''}">${icon(m.done?'check':'apple',17)}</div>
+            <div class="grow">
+              <div class="t-body-lg">${t(m.key)}</div>
+              <div class="t-caption">${m.done ? m.name+' · '+m.kcal+' kcal' : t('notLogged')}</div>
+            </div>
+            ${m.done ? `<button class="btn btn-ghost btn-sm" style="height:32px" onclick="openMealSheet()">${t('swapMeal')}</button>` : `<button class="btn-icon" style="width:36px;height:36px">${icon('plus',16)}</button>`}
+          </div>`).join('')}
+      </div>`;
+}
+
+function nutritionPlanView(){
+  if(state.plan==='free'){
+    return `<div style="margin-top:14px">${proLockCard(t('nutTabPlan'), t('proNutrition'))}</div>`;
+  }
+  const plan = [
+    {key:'breakfast', time:'09:00', foods:'Oats · Eggs · Berries', kcal:420, p:28},
+    {key:'lunch', time:'14:00', foods:'Chicken · Rice · Vegetables', kcal:620, p:48},
+    {key:'snack', time:'17:00', foods:'Greek yogurt · Almonds', kcal:260, p:18},
+    {key:'dinner', time:'21:00', foods:'Salmon · Quinoa · Greens', kcal:540, p:38},
+  ];
+  return `
+      <div class="flex-col gap-3 mb-6" style="margin-top:14px">
+        ${plan.map(m=>`
+          <div class="card-flat">
+            <div class="flex items-center justify-between mb-2">
+              <div class="t-body-lg" style="font-weight:700">${t(m.key)}</div>
+              <div class="t-mono-sm text-accent">${m.time}</div>
+            </div>
+            <div class="t-caption mb-3">${m.foods}</div>
+            <div class="flex items-center justify-between">
+              <div class="t-mono-sm">${m.kcal} kcal · ${m.p}g ${t('protein').toLowerCase ? t('protein') : ''}</div>
+              <button class="btn btn-ghost btn-sm" style="height:30px" onclick="openMealSheet()">${t('swapMeal')}</button>
+            </div>
+          </div>`).join('')}
+      </div>`;
+}
+
+function macroBar(label,val,goal,color){
+  const pct = Math.min(100, Math.round(val/goal*100));
+  return `<div>
+    <div class="flex justify-between mb-1">
+      <span class="t-body-lg" style="font-size:13px">${label}</span>
+      <span class="t-mono-sm">${val}/${goal}g</span>
+    </div>
+    <div class="bar-track thin"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+  </div>`;
+}
+
+/* ============================================================
+   Meal replace — bottom sheet
+   ============================================================ */
+function openMealSheet(){
+  if(state.plan==='free'){ openPremium(); return; }
+  state.showMealSheet=true; render();
+}
+function closeMealSheet(){ state.showMealSheet=false; render(); }
+function mealSheet(){
+  if(!state.showMealSheet) return '';
+  return `
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;" onclick="closeMealSheet()">
+    <div class="card" style="width:100%;border-radius:var(--r-xl) var(--r-xl) 0 0;max-height:70%;overflow-y:auto;padding-bottom:30px;" onclick="event.stopPropagation()">
+      <div style="width:36px;height:4px;background:var(--border-strong);border-radius:99px;margin:0 auto 16px;"></div>
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <div class="icon-badge accent" style="width:32px;height:32px">${icon('star',15)}</div>
+          <div class="t-title">${t('mealReplaceTitle')}</div>
+        </div>
+        <button class="btn-icon" onclick="closeMealSheet()">${icon('x',16)}</button>
+      </div>
+      <div class="t-body mb-4">${t('mealReplaceSub')}</div>
+      <div class="flex items-center gap-3 mb-5 card-flat">
+        <div class="icon-badge">${icon('apple',17)}</div>
+        <div class="grow">
+          <div class="t-body-lg">Turkey &amp; quinoa bowl</div>
+          <div class="t-caption">510 kcal · 42g protein · 48g carbs · 14g fat</div>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-secondary btn-full" onclick="closeMealSheet()">${t('back')}</button>
+        <button class="btn btn-primary btn-full" onclick="closeMealSheet()">${t('logMeal')}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   AI COACH
+   ============================================================ */
+function screenCoach(){
+  const tab = state.coachTab;
+  return `
+    ${statusBar()}
+    <div class="phone-screen">
+      <div class="phone-topbar flex items-center justify-between">
+        <div class="t-title">${t('navCoach')}</div>
+        <div class="pro-badge">${icon('star',11)} ${state.plan==='premium'?t('premiumBadge'):'AI'}</div>
+      </div>
+      <div class="flex items-center gap-1 mb-4 t-caption">${icon('check',12)}<span>${t('contextIndicator')}</span></div>
+      <div class="segmented mb-5">
+        <button class="${tab==='chat'?'active':''}" onclick="setCoachTab('chat')">${t('navCoach')}</button>
+        <button class="${tab==='insights'?'active':''}" onclick="setCoachTab('insights')">${t('dailyInsight')}</button>
+      </div>
+      ${tab==='chat' ? coachChat() : coachInsights()}
+    </div>
+    ${bottomNav('coach')}`;
+}
+function setCoachTab(v){ state.coachTab=v; render(); }
+
+function coachChat(){
+  if(state.plan==='free'){
+    return proLockCard(t('navCoach'), t('proAiCoach'));
+  }
+  return `
+    <div class="flex-col gap-4 mb-4">
+      <div class="flex items-start gap-2">
+        <div class="icon-badge accent" style="width:30px;height:30px;flex-shrink:0">${icon('star',14)}</div>
+        <div class="card-flat" style="max-width:82%">
+          <div class="t-body-lg" style="font-size:14px">${t('coachGreeting')}</div>
+        </div>
+      </div>
+      <div class="flex gap-2" style="align-self:flex-start;margin-inline-start:38px">
+        <div class="chip">${t('coachQuick')}</div>
+        <div class="chip">${t('coachFull')}</div>
+      </div>
+      <div class="flex items-start gap-2" style="align-self:flex-end;flex-direction:row-reverse;">
+        <div class="card-flat" style="max-width:82%;background:var(--accent-tint);border:1px solid var(--accent-tint-strong)">
+          <div class="t-body-lg" style="font-size:14px">${t('coachFull')}</div>
+        </div>
+      </div>
+      <div class="flex items-start gap-2">
+        <div class="icon-badge accent" style="width:30px;height:30px;flex-shrink:0">${icon('star',14)}</div>
+        <div class="card-flat" style="max-width:86%">
+          <div class="t-body-lg mb-2" style="font-size:14px">${t('insightBody')}</div>
+          <div class="t-caption">Based on: 7 workout logs, 21 meal logs, sleep data</div>
+        </div>
+      </div>
+    </div>
+    <div class="rel" style="position:sticky;bottom:0;padding-bottom:6px;background:linear-gradient(0deg,var(--bg) 70%,transparent)">
+      <div class="input flex items-center gap-2" style="padding-inline-end:6px">
+        <span class="t-body grow" style="color:var(--text-tertiary)">${t('coachInputPh')}</span>
+        <button class="btn-icon" style="width:36px;height:36px;background:transparent">${icon('mic',16)}</button>
+        <button class="btn-icon" style="width:36px;height:36px;background:var(--accent);color:var(--on-accent)">${icon('send',15)}</button>
+      </div>
+    </div>`;
+}
+
+function coachInsights(){
+  const range = state.insightRange;
+  const rangeChips = `<div class="flex gap-2 mb-5">
+      ${['insightsDaily','insightsWeekly','insightsMonthly'].map(r=>`<div class="chip ${range===r?'selected':''}" onclick="setInsightRange('${r}')">${t(r)}</div>`).join('')}
+    </div>`;
+  if(range!=='insightsDaily' && state.plan==='free'){
+    return rangeChips + proLockCard(t(range), t('proInsights'));
+  }
+  return rangeChips + `
+    ${range==='insightsDaily' ? `
+      <div class="card mb-4" style="background:linear-gradient(160deg,var(--accent-tint),var(--surface) 55%)">
+        <div class="t-eyebrow mb-2">${t('dailyInsight')}</div>
+        <div class="t-body-lg mb-3">${t('insightBody')}</div>
+        <div class="t-caption">Based on 3 training-day logs this week</div>
+      </div>
+      <div class="card">
+        <div class="t-eyebrow mb-3">Sleep vs. Protein — last 7 days</div>
+        ${miniChart()}
+      </div>
+    ` : range==='insightsWeekly' ? `
+      <div class="card mb-4">
+        <div class="t-eyebrow mb-2">${t('weeklyInsightTitle')}</div>
+        <div class="t-body-lg mb-2">${t('weeklyInsightBody')}</div>
+        <div class="t-caption">${t('basedOnWeek')}</div>
+      </div>
+      <div class="card">
+        <div class="t-eyebrow mb-3">Training volume — push exercises</div>
+        ${miniChart()}
+      </div>
+    ` : `
+      <div class="card mb-4">
+        <div class="t-eyebrow mb-2">${t('monthlyInsightTitle')}</div>
+        <div class="t-body-lg mb-2">${t('monthlyInsightBody')}</div>
+        <div class="t-caption">${t('basedOnMonth')}</div>
+      </div>
+      <div class="card">
+        <div class="t-eyebrow mb-3">Bodyweight trend — 30 days</div>
+        ${miniChart()}
+      </div>
+    `}
+    <div style="height:16px"></div>`;
+}
+function setInsightRange(r){ state.insightRange=r; render(); }
+function miniChart(){
+  const vals=[40,55,48,70,62,80,74];
+  const max=Math.max(...vals);
+  return `<div class="chart-bars">
+    ${vals.map((v,i)=>`<div class="bar-col"><div class="bar ${i===5?'hi':''}" style="height:${v/max*100}%"></div><div class="lbl">${['M','T','W','T','F','S','S'][i]}</div></div>`).join('')}
+  </div>`;
+}
+
+/* ============================================================
+   HISTORY
+   ============================================================ */
+function screenHistory(){
+  const tab = state.historyTab;
+  return `
+    ${statusBar()}
+    <div class="phone-screen">
+      <div class="phone-topbar">
+        <div class="t-title mb-3">${t('navHistory')}</div>
+        <div class="segmented">
+          <button class="${tab==='overview'?'active':''}" onclick="setHistTab('overview')">${t('histOverview')}</button>
+          <button class="${tab==='workouts'?'active':''}" onclick="setHistTab('workouts')">${t('histWorkouts')}</button>
+          <button class="${tab==='progress'?'active':''}" onclick="setHistTab('progress')">${t('histProgress')}</button>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        ${tab==='overview' ? histOverviewView() : tab==='workouts' ? histWorkoutsView() : histProgressView()}
+      </div>
+      <div style="height:16px"></div>
+    </div>
+    ${bottomNav('history')}`;
+}
+function setHistTab(k){ state.historyTab=k; render(); }
+function setHistSub(k){ state.historySub=k; render(); }
+
+function histOverviewView(){
+  return `
+    <div class="dash-grid mb-4">
+      <div class="dash-tile"><div class="t-eyebrow">${t('workoutStatus')}</div><div class="t-mono-md">3/3</div></div>
+      <div class="dash-tile"><div class="t-eyebrow">${t('avgProtein')}</div><div class="t-mono-md">164g</div></div>
+      <div class="dash-tile"><div class="t-eyebrow">${t('avgSteps')}</div><div class="t-mono-md">8,420</div></div>
+      <div class="dash-tile"><div class="t-eyebrow">${t('avgSleep')}</div><div class="t-mono-md">7h 18m</div></div>
+    </div>
+    <div class="card mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <div class="t-eyebrow">${t('weeklyGoalCompletion')}</div>
+        <div class="t-mono-md text-accent">82%</div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+    </div>
+    <div class="card" style="background:linear-gradient(160deg,var(--accent-tint),var(--surface) 55%)">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="icon-badge accent" style="width:30px;height:30px">${icon('star',14)}</div>
+        <div class="t-eyebrow">${t('aiSummary')}</div>
+      </div>
+      <div class="t-body-lg mb-1">${t('weeklyAiSummary')}</div>
+      <div class="t-caption">${t('basedOnWeek')}</div>
+    </div>`;
+}
+
+function histWorkoutsView(){
+  return `
+    <div class="segmented mb-4">
+      <button class="active">${t('last30')}</button>
+      <button>${t('last90')}</button>
+      <button>${t('last12w')}</button>
+    </div>
+    <div class="flex-col gap-3">
+      ${historyMini('Push Day A','Aug 15','52 min','+2.5 kg bench')}
+      ${historyMini('Pull Day','Aug 13','48 min','PB: pulldown')}
+      ${historyMini('Leg Day','Aug 11','61 min','Volume +6%')}
+      ${historyMini('Push Day A','Aug 8','55 min','+2 reps OHP')}
+    </div>`;
+}
+
+function histProgressView(){
+  const sub = state.historySub;
+  const subTabs=[['weight',t('weightProgress')],['strength',t('strengthProgress')],['goal',t('goalProgress')]];
+  const body = sub==='weight' ? `
+        <div class="card mb-5">
+          <div class="flex justify-between items-baseline mb-4">
+            <div><div class="t-mono-xl">65.4<span class="t-body">kg</span></div><div class="t-caption">-2.1 kg ${t('last30')}</div></div>
+            <div class="text-success t-body-lg" style="font-weight:700">↓ 3.1%</div>
+          </div>
+          ${lineChartSvg()}
+        </div>
+        <div class="flex-col gap-2">
+          ${histRow('Aug 15','65.4 kg','−0.3 kg')}
+          ${histRow('Aug 8','65.7 kg','−0.4 kg')}
+          ${histRow('Aug 1','66.1 kg','−0.5 kg')}
+        </div>` : sub==='strength' ? (
+          state.plan==='free' ? proLockCard(t('strengthProgress'), t('strengthLocked')) : `
+        <div class="card mb-5">
+          <div class="t-eyebrow mb-3">Estimated 1RM · ${t('benchPress')}</div>
+          ${lineChartSvg()}
+        </div>
+        ${EXLIB.slice(0,3).map(ex=>`
+          <div class="card-flat flex items-center gap-3 mb-3">
+            <div class="icon-badge accent">${icon('trophy',16)}</div>
+            <div class="grow"><div class="t-body-lg">${t(ex.key)}</div><div class="t-caption">${t('personalBest')}</div></div>
+            <div class="t-mono-sm text-accent">${ex.best}</div>
+          </div>`).join('')}`
+        ) : `
+        <div class="card mb-5">
+          <div class="flex items-center gap-5">
+            ${ring(58,84,8,'var(--accent-strong)', `<div class="t-mono-md">58%</div>`)}
+            <div class="grow">
+              <div class="t-body-lg mb-1">${t('goalBuild')}</div>
+              <div class="t-caption">${t('dayInto')} 42 ${t('ofJourney')} · 30 to go</div>
+            </div>
+          </div>
+        </div>
+        ${histRow('Milestone','−2 kg reached','Aug 10')}
+        ${histRow('Milestone','+5kg bench PB','Aug 9')}`;
+  return `
+    <div class="flex gap-2 wrap mb-4">
+      ${subTabs.map(([k,l])=>`<div class="chip ${sub===k?'selected':''}" onclick="setHistSub('${k}')">${l}</div>`).join('')}
+    </div>
+    ${body}`;
+}
+
+function histRow(a,b,c){
+  return `<div class="list-item">
+    <div class="grow t-body-lg">${a}</div>
+    <div class="t-mono-sm">${b}</div>
+    <div class="t-caption" style="margin-inline-start:10px;color:var(--success)">${c}</div>
+  </div>`;
+}
+function lineChartSvg(){
+  const pts=[40,38,34,36,30,28,24,26,20,18];
+  const w=295,h=90,step=w/(pts.length-1),max=Math.max(...pts),min=Math.min(...pts);
+  const norm = v => h - ((v-min)/(max-min))*h*0.85 - 5;
+  const d = pts.map((v,i)=>`${i===0?'M':'L'} ${i*step} ${norm(v)}`).join(' ');
+  const area = d + ` L ${w} ${h} L 0 ${h} Z`;
+  return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+    </linearGradient></defs>
+    <path d="${area}" fill="url(#lg)"/>
+    <path d="${d}" fill="none" stroke="var(--accent-strong)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+/* ============================================================
+   SETTINGS (sheet)
+   ============================================================ */
+/* ============================================================
+   PROFILE (sheet)
+   ============================================================ */
+function openProfile(){ state.showProfile=true; render(); }
+function closeProfile(){ state.showProfile=false; render(); }
+function profileFromSettings(){ state.showSettings=false; state.showProfile=true; render(); }
+function settingsFromProfile(){ state.showProfile=false; state.showSettings=true; render(); }
+function profileSheet(){
+  if(!state.showProfile) return '';
+  return `
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;" onclick="closeProfile()">
+    <div class="card" style="width:100%;border-radius:var(--r-xl) var(--r-xl) 0 0;max-height:88%;overflow-y:auto;padding-bottom:34px;" onclick="event.stopPropagation()">
+      <div style="width:36px;height:4px;background:var(--border-strong);border-radius:99px;margin:0 auto 16px;"></div>
+      <div class="flex items-center justify-between mb-5">
+        <div class="t-display-lg">${t('profileTitle')}</div>
+        <button class="btn-icon" onclick="closeProfile()">${icon('x',16)}</button>
+      </div>
+
+      <div class="flex items-center gap-3 mb-6">
+        <button class="avatar-btn" style="width:52px;height:52px;font-size:18px" onclick="closeProfile()">S</button>
+        <div class="grow">
+          <div class="t-title">Sara</div>
+          <div class="t-caption">65.4 kg → 62.0 kg</div>
+        </div>
+        <div class="pro-badge">${state.plan==='premium'?t('premiumBadge'):t('freeBadge')}</div>
+      </div>
+
+      <div class="t-eyebrow mb-2">${t('personalInfo')}</div>
+      <div class="card-flat mb-5">
+        <div class="list-item"><span class="t-body-lg grow">${t('weight')}</span><span class="t-mono-sm">65.4 kg</span><div style="color:var(--text-tertiary);margin-inline-start:8px">${icon('pencil',14)}</div></div>
+        <div class="list-item"><span class="t-body-lg grow">${t('height')}</span><span class="t-mono-sm">165 cm</span><div style="color:var(--text-tertiary);margin-inline-start:8px">${icon('pencil',14)}</div></div>
+      </div>
+
+      <div class="t-eyebrow mb-2">${t('goalsSection')}</div>
+      <div class="card-flat mb-5">
+        <div class="list-item"><span class="t-body-lg grow">${t(state.ob.goal)}</span><span class="t-mono-sm">${t('targetWeight')} ${state.ob.targetWeight}kg</span></div>
+      </div>
+
+      <div class="t-eyebrow mb-2">${t('trainingSection')}</div>
+      <div class="card-flat mb-5">
+        <div class="list-item"><span class="t-body-lg grow">${t(state.ob.exp)}</span><span class="t-mono-sm">${state.ob.days}${state.lang==='ar'?' أيام':'d'}/${state.lang==='ar'?'أسبوع':'wk'}</span></div>
+      </div>
+
+      <div class="t-eyebrow mb-2">${t('nutritionPrefsSection')}</div>
+      <div class="card-flat mb-6">
+        <div class="list-item"><span class="t-body-lg grow">${t(state.ob
